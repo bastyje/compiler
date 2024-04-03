@@ -13,8 +13,18 @@ statement
     | definition
     | assignment
     | expression
+    | printStatement
+    | readStatement
     ;
-    
+
+printStatement
+    : PRINT '(' expression ')'
+    ;
+
+readStatement
+    : READ '(' IDENTIFIER ')'
+    ;
+   
 assignment
     : IDENTIFIER ASSIGN expression;
     
@@ -51,6 +61,9 @@ type
 numericType
     : INT | FLOAT
     ;    
+
+PRINT: 'print';
+READ: 'read';
 
 INT: 'int';
 FLOAT: 'float';

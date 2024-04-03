@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /home/sebastian/studia/curr/jfk/proj/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
+// Generated from D:/Projects/compiler/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -71,6 +71,30 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] PolskiParser.StatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.printStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPrintStatement([NotNull] PolskiParser.PrintStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.printStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPrintStatement([NotNull] PolskiParser.PrintStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.readStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReadStatement([NotNull] PolskiParser.ReadStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.readStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReadStatement([NotNull] PolskiParser.ReadStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
 	/// <para>The default implementation does nothing.</para>

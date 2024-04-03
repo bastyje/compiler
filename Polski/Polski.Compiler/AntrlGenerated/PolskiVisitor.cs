@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /home/sebastian/studia/curr/jfk/proj/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
+// Generated from D:/Projects/compiler/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -49,6 +49,18 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] PolskiParser.StatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrintStatement([NotNull] PolskiParser.PrintStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.readStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReadStatement([NotNull] PolskiParser.ReadStatementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.assignment"/>.
 	/// </summary>

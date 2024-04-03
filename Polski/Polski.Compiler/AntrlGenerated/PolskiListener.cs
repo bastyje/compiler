@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /home/sebastian/studia/curr/jfk/proj/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
+// Generated from D:/Projects/compiler/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -60,6 +60,26 @@ public interface IPolskiListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] PolskiParser.StatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrintStatement([NotNull] PolskiParser.PrintStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.printStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrintStatement([NotNull] PolskiParser.PrintStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.readStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterReadStatement([NotNull] PolskiParser.ReadStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.readStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitReadStatement([NotNull] PolskiParser.ReadStatementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
 	/// </summary>
