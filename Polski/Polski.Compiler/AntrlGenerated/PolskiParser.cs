@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from /home/sebastian/studia/curr/jfk/proj/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
+// Generated from /home/sebastian/studia/inf/8/jfk/proj/Polski/Polski.Compiler/LanguageDefinition/Polski.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -36,10 +36,10 @@ public partial class PolskiParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		INT=1, FLOAT=2, AND=3, EQUALS=4, GREATER_OR_EQUALS=5, GREATER=6, LESS_OR_EQUALS=7, 
-		LESS=8, NOT=9, NOT_EQUALS=10, OR=11, XOR=12, ASSIGN=13, DIVIDE=14, MINUS=15, 
-		MULTIPLY=16, PLUS=17, WHITESPACE=18, INTEGER_NUMBER=19, REAL_NUMBER=20, 
-		IDENTIFIER=21, SEMICOLON=22;
+		SEMICOLON=1, INT=2, INT64=3, FLOAT=4, DOUBLE=5, AND=6, EQUALS=7, GREATER_OR_EQUALS=8, 
+		GREATER=9, LESS_OR_EQUALS=10, LESS=11, NOT=12, NOT_EQUALS=13, OR=14, XOR=15, 
+		ASSIGN=16, DIVIDE=17, MINUS=18, MULTIPLY=19, PLUS=20, WHITESPACE=21, INTEGER_NUMBER=22, 
+		REAL_NUMBER=23, IDENTIFIER=24;
 	public const int
 		RULE_program = 0, RULE_line = 1, RULE_statement = 2, RULE_assignment = 3, 
 		RULE_expression = 4, RULE_arithmeticExpression = 5, RULE_number = 6, RULE_declaration = 7, 
@@ -50,15 +50,15 @@ public partial class PolskiParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'int'", "'float'", "'&&'", "'=='", "'>='", "'>'", "'<='", "'<'", 
-		"'!'", "'!='", "'||'", "'^'", "'='", "'/'", "'-'", "'*'", "'+'", null, 
-		null, null, null, "';'"
+		null, "';'", "'int'", "'bigint'", "'float'", "'double'", "'&&'", "'=='", 
+		"'>='", "'>'", "'<='", "'<'", "'!'", "'!='", "'||'", "'^'", "'='", "'/'", 
+		"'-'", "'*'", "'+'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "INT", "FLOAT", "AND", "EQUALS", "GREATER_OR_EQUALS", "GREATER", 
-		"LESS_OR_EQUALS", "LESS", "NOT", "NOT_EQUALS", "OR", "XOR", "ASSIGN", 
-		"DIVIDE", "MINUS", "MULTIPLY", "PLUS", "WHITESPACE", "INTEGER_NUMBER", 
-		"REAL_NUMBER", "IDENTIFIER", "SEMICOLON"
+		null, "SEMICOLON", "INT", "INT64", "FLOAT", "DOUBLE", "AND", "EQUALS", 
+		"GREATER_OR_EQUALS", "GREATER", "LESS_OR_EQUALS", "LESS", "NOT", "NOT_EQUALS", 
+		"OR", "XOR", "ASSIGN", "DIVIDE", "MINUS", "MULTIPLY", "PLUS", "WHITESPACE", 
+		"INTEGER_NUMBER", "REAL_NUMBER", "IDENTIFIER"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -93,8 +93,11 @@ public partial class PolskiParser : Parser {
 	}
 
 	public partial class ProgramContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public LineContext line() {
-			return GetRuleContext<LineContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public LineContext[] line() {
+			return GetRuleContexts<LineContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public LineContext line(int i) {
+			return GetRuleContext<LineContext>(i);
 		}
 		public ProgramContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -123,11 +126,24 @@ public partial class PolskiParser : Parser {
 	public ProgramContext program() {
 		ProgramContext _localctx = new ProgramContext(Context, State);
 		EnterRule(_localctx, 0, RULE_program);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 22;
-			line();
+			State = 23;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 22;
+				line();
+				}
+				}
+				State = 25;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 29360188L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -176,9 +192,9 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 24;
+			State = 27;
 			statement();
-			State = 25;
+			State = 28;
 			Match(SEMICOLON);
 			}
 		}
@@ -234,34 +250,34 @@ public partial class PolskiParser : Parser {
 		StatementContext _localctx = new StatementContext(Context, State);
 		EnterRule(_localctx, 4, RULE_statement);
 		try {
-			State = 31;
+			State = 34;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,0,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 27;
+				State = 30;
 				declaration();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 28;
+				State = 31;
 				definition();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 29;
+				State = 32;
 				assignment();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 30;
+				State = 33;
 				expression();
 				}
 				break;
@@ -314,11 +330,11 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 33;
+			State = 36;
 			Match(IDENTIFIER);
-			State = 34;
+			State = 37;
 			Match(ASSIGN);
-			State = 35;
+			State = 38;
 			expression();
 			}
 		}
@@ -367,7 +383,7 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 37;
+			State = 40;
 			arithmeticExpression(0);
 			}
 		}
@@ -436,19 +452,19 @@ public partial class PolskiParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 42;
+			State = 45;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case IDENTIFIER:
 				{
-				State = 40;
+				State = 43;
 				Match(IDENTIFIER);
 				}
 				break;
 			case INTEGER_NUMBER:
 			case REAL_NUMBER:
 				{
-				State = 41;
+				State = 44;
 				number();
 				}
 				break;
@@ -456,27 +472,27 @@ public partial class PolskiParser : Parser {
 				throw new NoViableAltException(this);
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 58;
+			State = 61;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 56;
+					State = 59;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
 					case 1:
 						{
 						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 44;
+						State = 47;
 						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
-						State = 45;
+						State = 48;
 						Match(MULTIPLY);
-						State = 46;
+						State = 49;
 						arithmeticExpression(7);
 						}
 						break;
@@ -484,11 +500,11 @@ public partial class PolskiParser : Parser {
 						{
 						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 47;
+						State = 50;
 						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
-						State = 48;
+						State = 51;
 						Match(DIVIDE);
-						State = 49;
+						State = 52;
 						arithmeticExpression(6);
 						}
 						break;
@@ -496,11 +512,11 @@ public partial class PolskiParser : Parser {
 						{
 						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 50;
+						State = 53;
 						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
-						State = 51;
+						State = 54;
 						Match(PLUS);
-						State = 52;
+						State = 55;
 						arithmeticExpression(5);
 						}
 						break;
@@ -508,20 +524,20 @@ public partial class PolskiParser : Parser {
 						{
 						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
 						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 53;
+						State = 56;
 						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
-						State = 54;
+						State = 57;
 						Match(MINUS);
-						State = 55;
+						State = 58;
 						arithmeticExpression(4);
 						}
 						break;
 					}
 					} 
 				}
-				State = 60;
+				State = 63;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
 			}
 			}
 		}
@@ -570,7 +586,7 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 61;
+			State = 64;
 			_la = TokenStream.LA(1);
 			if ( !(_la==INTEGER_NUMBER || _la==REAL_NUMBER) ) {
 			ErrorHandler.RecoverInline(this);
@@ -627,9 +643,9 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 63;
+			State = 66;
 			type();
-			State = 64;
+			State = 67;
 			Match(IDENTIFIER);
 			}
 		}
@@ -682,11 +698,11 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 66;
+			State = 69;
 			declaration();
-			State = 67;
+			State = 70;
 			Match(ASSIGN);
-			State = 68;
+			State = 71;
 			expression();
 			}
 		}
@@ -735,7 +751,7 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 70;
+			State = 73;
 			numericType();
 			}
 		}
@@ -752,7 +768,9 @@ public partial class PolskiParser : Parser {
 
 	public partial class NumericTypeContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(PolskiParser.INT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT64() { return GetToken(PolskiParser.INT64, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FLOAT() { return GetToken(PolskiParser.FLOAT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOUBLE() { return GetToken(PolskiParser.DOUBLE, 0); }
 		public NumericTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -784,9 +802,9 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 72;
+			State = 75;
 			_la = TokenStream.LA(1);
-			if ( !(_la==INT || _la==FLOAT) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 60L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -823,26 +841,28 @@ public partial class PolskiParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,22,75,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,3,2,
-		32,8,2,1,3,1,3,1,3,1,3,1,4,1,4,1,5,1,5,1,5,3,5,43,8,5,1,5,1,5,1,5,1,5,
-		1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,57,8,5,10,5,12,5,60,9,5,1,6,1,6,1,
-		7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,10,1,10,1,10,0,1,10,11,0,2,4,6,8,10,
-		12,14,16,18,20,0,2,1,0,19,20,1,0,1,2,71,0,22,1,0,0,0,2,24,1,0,0,0,4,31,
-		1,0,0,0,6,33,1,0,0,0,8,37,1,0,0,0,10,42,1,0,0,0,12,61,1,0,0,0,14,63,1,
-		0,0,0,16,66,1,0,0,0,18,70,1,0,0,0,20,72,1,0,0,0,22,23,3,2,1,0,23,1,1,0,
-		0,0,24,25,3,4,2,0,25,26,5,22,0,0,26,3,1,0,0,0,27,32,3,14,7,0,28,32,3,16,
-		8,0,29,32,3,6,3,0,30,32,3,8,4,0,31,27,1,0,0,0,31,28,1,0,0,0,31,29,1,0,
-		0,0,31,30,1,0,0,0,32,5,1,0,0,0,33,34,5,21,0,0,34,35,5,13,0,0,35,36,3,8,
-		4,0,36,7,1,0,0,0,37,38,3,10,5,0,38,9,1,0,0,0,39,40,6,5,-1,0,40,43,5,21,
-		0,0,41,43,3,12,6,0,42,39,1,0,0,0,42,41,1,0,0,0,43,58,1,0,0,0,44,45,10,
-		6,0,0,45,46,5,16,0,0,46,57,3,10,5,7,47,48,10,5,0,0,48,49,5,14,0,0,49,57,
-		3,10,5,6,50,51,10,4,0,0,51,52,5,17,0,0,52,57,3,10,5,5,53,54,10,3,0,0,54,
-		55,5,15,0,0,55,57,3,10,5,4,56,44,1,0,0,0,56,47,1,0,0,0,56,50,1,0,0,0,56,
-		53,1,0,0,0,57,60,1,0,0,0,58,56,1,0,0,0,58,59,1,0,0,0,59,11,1,0,0,0,60,
-		58,1,0,0,0,61,62,7,0,0,0,62,13,1,0,0,0,63,64,3,18,9,0,64,65,5,21,0,0,65,
-		15,1,0,0,0,66,67,3,14,7,0,67,68,5,13,0,0,68,69,3,8,4,0,69,17,1,0,0,0,70,
-		71,3,20,10,0,71,19,1,0,0,0,72,73,7,1,0,0,73,21,1,0,0,0,4,31,42,56,58
+		4,1,24,78,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,4,0,24,8,0,11,0,12,0,25,1,1,1,1,1,1,
+		1,2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,1,3,1,3,1,4,1,4,1,5,1,5,1,5,3,5,46,
+		8,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,60,8,5,10,5,12,
+		5,63,9,5,1,6,1,6,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,10,1,10,1,10,0,
+		1,10,11,0,2,4,6,8,10,12,14,16,18,20,0,2,1,0,22,23,1,0,2,5,75,0,23,1,0,
+		0,0,2,27,1,0,0,0,4,34,1,0,0,0,6,36,1,0,0,0,8,40,1,0,0,0,10,45,1,0,0,0,
+		12,64,1,0,0,0,14,66,1,0,0,0,16,69,1,0,0,0,18,73,1,0,0,0,20,75,1,0,0,0,
+		22,24,3,2,1,0,23,22,1,0,0,0,24,25,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,
+		26,1,1,0,0,0,27,28,3,4,2,0,28,29,5,1,0,0,29,3,1,0,0,0,30,35,3,14,7,0,31,
+		35,3,16,8,0,32,35,3,6,3,0,33,35,3,8,4,0,34,30,1,0,0,0,34,31,1,0,0,0,34,
+		32,1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,37,5,24,0,0,37,38,5,16,0,0,38,
+		39,3,8,4,0,39,7,1,0,0,0,40,41,3,10,5,0,41,9,1,0,0,0,42,43,6,5,-1,0,43,
+		46,5,24,0,0,44,46,3,12,6,0,45,42,1,0,0,0,45,44,1,0,0,0,46,61,1,0,0,0,47,
+		48,10,6,0,0,48,49,5,19,0,0,49,60,3,10,5,7,50,51,10,5,0,0,51,52,5,17,0,
+		0,52,60,3,10,5,6,53,54,10,4,0,0,54,55,5,20,0,0,55,60,3,10,5,5,56,57,10,
+		3,0,0,57,58,5,18,0,0,58,60,3,10,5,4,59,47,1,0,0,0,59,50,1,0,0,0,59,53,
+		1,0,0,0,59,56,1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,61,62,1,0,0,0,62,11,
+		1,0,0,0,63,61,1,0,0,0,64,65,7,0,0,0,65,13,1,0,0,0,66,67,3,18,9,0,67,68,
+		5,24,0,0,68,15,1,0,0,0,69,70,3,14,7,0,70,71,5,16,0,0,71,72,3,8,4,0,72,
+		17,1,0,0,0,73,74,3,20,10,0,74,19,1,0,0,0,75,76,7,1,0,0,76,21,1,0,0,0,5,
+		25,34,45,59,61
 	};
 
 	public static readonly ATN _ATN =
