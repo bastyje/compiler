@@ -1,4 +1,5 @@
 using Antlr4.Runtime;
+using Polski.Compiler.Common;
 using Polski.Compiler.Visitor;
 
 namespace Polski.Compiler;
@@ -12,7 +13,8 @@ public static class Compiler
         var tokens = new CommonTokenStream(lexer);
         var parser = new PolskiParser(tokens);
         var tree = parser.program();
-        var visitor = new PolskiVisitor();
+        var scopeContext = new ScopeContext();
+        var visitor = new PolskiVisitor(scopeContext);
         return visitor.Visit(tree);
     }
 }
