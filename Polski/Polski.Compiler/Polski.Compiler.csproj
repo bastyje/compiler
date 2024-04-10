@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="AntrlGenerated\" />
+      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+      <Folder Include="listener\" />
     </ItemGroup>
 
 </Project>

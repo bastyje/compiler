@@ -18,11 +18,11 @@ statement
     ;
 
 printStatement
-    : PRINT '(' QUOTED_STRING ')'
+    : PRINT '(' QUOTED_STRING | IDENTIFIER')'
     ;
 
 readStatement
-    : READ '(' ID ')'
+    : READ '(' IDENTIFIER ')'
     ;
    
 assignment
@@ -89,8 +89,7 @@ WHITESPACE: [ \t\r\n]+ -> skip;
 
 INTEGER_NUMBER: [1-9][0-9]*;
 REAL_NUMBER: [1-9][0-9]*'.'[0-9]+; 
-QUOTED_STRING: '"' ( 'a'..'z' | 'A'..'Z' | '0'..'9' )* '"' ;
-ID: ('a'..'z' | 'A'..'Z')+ ;
+QUOTED_STRING : '"' ( '\\' '"' | ~('"' | '\\') )* '"';
 
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9]*;
 SEMICOLON: ';';
