@@ -1,6 +1,7 @@
 using Antlr4.Runtime;
 using Polski.Compiler.exception;
 using Polski.Compiler.listener;
+using Polski.Compiler.Common;
 using Polski.Compiler.Visitor;
 
 namespace Polski.Compiler;
@@ -18,7 +19,8 @@ public static class Compiler
             parser.RemoveErrorListeners();
             parser.AddErrorListener(new ErrorListener());
             var tree = parser.program();
-            var visitor = new PolskiVisitor();
+            var scopeContext = new ScopeContext();
+            var visitor = new PolskiVisitor(scopeContext);
             return visitor.Visit(tree);
         }
         catch (Exception e)
@@ -33,6 +35,5 @@ public static class Compiler
             }
             
         }
-        
     }
 }
