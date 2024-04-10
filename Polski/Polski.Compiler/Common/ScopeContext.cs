@@ -46,6 +46,11 @@ public class ScopeContext
             throw new InvalidOperationException("There is no defined scope");
         }
         
+        if (CurrentScopeMembers.Any(m => m.PolskiMember.Name == polskiMember.Name))
+        {
+            throw new InvalidOperationException($"Variable {polskiMember.Name} is already defined in this scope");
+        }
+        
         var member = GenerateMember(polskiMember, stackAllocated);
         CurrentScopeMembers.Add(member);
         return member;

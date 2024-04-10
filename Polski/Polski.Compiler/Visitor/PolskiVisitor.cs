@@ -9,9 +9,13 @@ namespace Polski.Compiler.Visitor;
 /// </summary>
 public partial class PolskiVisitor : PolskiBaseVisitor<NodeResult>
 {
+    public PolskiVisitor(ScopeContext scopeContext)
+    {
+        _scopeContext = scopeContext;
+    }
+    
     public override NodeResult VisitProgram(PolskiParser.ProgramContext context)
     {
-        _scopeContext = new ScopeContext();
         _scopeContext.PushScope();
 
         var sb = new StringBuilder();
