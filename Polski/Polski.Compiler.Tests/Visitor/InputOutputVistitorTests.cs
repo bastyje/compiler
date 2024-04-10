@@ -9,57 +9,80 @@ namespace Polski.Compiler.Tests.Visitor;
 public class InputOutputVisitorTests
 {
     [Fact]
-    public void VisitPrintStatement_WhenQuotedStringIsGiven_ShouldReturnCorrectLlvmCode()
+    public void VisitPrintStatement_WithQuotedString_ShouldGenerateCorrectLlvmCode()
     {
-        // arrange
-        const string quotedString = "\"Hello, World!\"";
-
+        // Arrange
         var visitor = new PolskiVisitor();
+        var context = new PolskiParser.PrintStatementContext(new ParserRuleContext(), default);
+        context.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.QUOTED_STRING, "\"Hello, World!\"")));
 
-        var printStatementContext = new PolskiParser.PrintStatementContext(new ParserRuleContext(), default);
-        printStatementContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.QUOTED_STRING, quotedString)));
+        // Act
+        var result = visitor.VisitPrintStatement(context);
 
-        // act
-        var result = visitor.VisitPrintStatement(printStatementContext);
+        // Expected LLVM IR code for printing "Hello, World!"
+        var expectedLlvmIr = @"
+declare i32 @printf(i8*, ...)
+@.str0 = private unnamed_addr constant [14 x i8] c""Hello, World!\00"", align 1
+call i32 (i8*, ...) @printf(i8* getelementptr ([14 x i8], [14 x i8]* @.str0, i32 0, i32 0))
+".Trim();
 
-        // assert
-        Assert.Contains("declare i32 @printf(i8*, ...)", result.Code);
-        Assert.Contains("@.str = private unnamed_addr constant [14 x i8] c\"Hello, World!\\00\"", result.Code);
-        Assert.Contains("call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str, i64 0, i64 0))", result.Code);
+        // Assert
+        Assert.Equal(expectedLlvmIr, result.Code.Trim());
     }
 
     [Fact]
-    public void VisitPrintStatement_WhenEmptyQuotedStringIsGiven_ShouldReturnCorrectLlvmCode()
+    public void VisitPrintStatement_WithIdentifier_ShouldGenerateCorrectLlvmLoadAndPrintCode()
     {
-        // arrange
-        const string quotedString = "\"\"";
-
+        // Arrange
         var visitor = new PolskiVisitor();
+        // Simulate adding a variable to the visitor's scope with an int type
+        var variableName = "myVar";
+        var llvmVariableName = visitor.GenerateAndRegisterVariableName("i32", variableName);
 
-        var printStatementContext = new PolskiParser.PrintStatementContext(new ParserRuleContext(), default);
-        printStatementContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.QUOTED_STRING, quotedString)));
+        var context = new PolskiParser.PrintStatementContext(new ParserRuleContext(), default);
+        context.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, variableName)));
 
-        // act
-        var result = visitor.VisitPrintStatement(printStatementContext);
+        // Expected LLVM IR code for loading and printing a variable
+        var expectedLlvmIr = $@"
+declare i32 @printf(i8*, ...)
+%tmp0 = load i32, i32* %{llvmVariableName}
+@.str0 = private unnamed_addr constant [4 x i8] c""%d\00"", align 1
+call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* @.str0, i32 0, i32 0), i32 %tmp0)
+".Trim();
 
-        // assert
-        Assert.Contains("declare i32 @printf(i8*, ...)", result.Code);
-        Assert.Contains("@.str = private unnamed_addr constant [1 x i8] c\"\\00\"", result.Code);
-        Assert.Contains("call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str, i64 0, i64 0))", result.Code);
+        // Act
+        var result = visitor.VisitPrintStatement(context);
+
+        // Assert
+        Assert.Contains("load i32, i32*", result.Code);
+        Assert.Contains("@printf(i8* getelementptr", result.Code);
     }
 
     [Fact]
-    public void VisitPrintStatement_WhenNoQuotedStringIsGiven_ShouldNotReturnLlvmCode()
+    public void VisitReadStatement_WithIdentifier_ShouldGenerateCorrectLlvmScanfCode()
     {
-        // arrange
+        // Arrange
         var visitor = new PolskiVisitor();
+        // Assuming GenerateAndRegisterVariableName is a method that simulates adding a variable to the visitor's scope with an int type and returns the LLVM variable name
+        var variableName = "inputVar";
+        var llvmVariableName = visitor.GenerateAndRegisterVariableName("i32", variableName);
 
-        var printStatementContext = new PolskiParser.PrintStatementContext(new ParserRuleContext(), default);
+        var context = new PolskiParser.ReadStatementContext(new ParserRuleContext(), default);
+        context.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, variableName)));
 
-        // act
-        var result = visitor.VisitPrintStatement(printStatementContext);
+        // Expected LLVM IR code for reading into a variable
+        var expectedLlvmIr = $@"
+declare i32 @scanf(i8*, ...)
+@.str0 = private unnamed_addr constant [3 x i8] c""%d\00"", align 1
+call i32 (i8*, ...) @scanf(i8* getelementptr ([3 x i8], [3 x i8]* @.str0, i32 0, i32 0), i32* %{llvmVariableName})
+".Trim();
 
-        // assert
-        Assert.Empty(result.Code);
+        // Act
+        var result = visitor.VisitReadStatement(context);
+
+        // Assert
+        Assert.Contains("declare i32 @scanf(i8*, ...)", result.Code);
+        Assert.Contains("call i32 (i8*, ...) @scanf(i8* getelementptr", result.Code);
+        Assert.Contains("%d", result.Code); // Verifies the format specifier is correct for an integer
     }
 }

@@ -1,7 +1,7 @@
 grammar Polski;
 
 program
-    : line
+    : line+
     ;
     
 line
@@ -30,7 +30,25 @@ assignment
     
 expression
     : arithmeticExpression
+//    | additiveExpression
     ;
+    
+//additiveExpression
+//    : multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
+//    ;
+//    
+//multiplicativeExpression
+//    : unaryExpression ((MULTIPLY | DIVIDE) unaryExpression)*
+//    ;
+//    
+//unaryExpression
+//    : primaryExpression
+//    ;
+//    
+//primaryExpression
+//    : IDENTIFIER
+//    | number
+//    ;
     
 arithmeticExpression
     : arithmeticExpression MULTIPLY arithmeticExpression
@@ -59,14 +77,17 @@ type
     ;
 
 numericType
-    : INT | FLOAT
+    : INT | INT64 | FLOAT | DOUBLE
     ;    
 
 PRINT: 'print';
 READ: 'read';
 
+SEMICOLON: ';';
 INT: 'int';
+INT64: 'bigint';
 FLOAT: 'float';
+DOUBLE: 'double';
 
 AND: '&&';
 EQUALS: '==';
@@ -92,4 +113,3 @@ REAL_NUMBER: [1-9][0-9]*'.'[0-9]+;
 QUOTED_STRING : '"' ( '\\' '"' | ~('"' | '\\') )* '"';
 
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9]*;
-SEMICOLON: ';';

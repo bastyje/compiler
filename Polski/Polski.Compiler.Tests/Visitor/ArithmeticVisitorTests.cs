@@ -16,8 +16,8 @@ public class ArithmeticVisitorTests
         
         var visitor = new PolskiVisitor();
         
-        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, leftName);
-        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, rightName);
+        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, leftName);
+        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, rightName);
         
         var leftContext = new PolskiParser.ArithmeticExpressionContext(new ParserRuleContext(), default);
         leftContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, leftName)));
@@ -46,8 +46,8 @@ public class ArithmeticVisitorTests
         
         var visitor = new PolskiVisitor();
         
-        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, leftName);
-        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, rightName);
+        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, leftName);
+        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, rightName);
         
         var leftContext = new PolskiParser.ArithmeticExpressionContext(new ParserRuleContext(), default);
         leftContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, leftName)));
@@ -76,8 +76,8 @@ public class ArithmeticVisitorTests
         
         var visitor = new PolskiVisitor();
         
-        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, leftName);
-        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, rightName);
+        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, leftName);
+        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, rightName);
         
         var leftContext = new PolskiParser.ArithmeticExpressionContext(new ParserRuleContext(), default);
         leftContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, leftName)));
@@ -106,8 +106,8 @@ public class ArithmeticVisitorTests
         
         var visitor = new PolskiVisitor();
         
-        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, leftName);
-        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int, rightName);
+        var leftLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, leftName);
+        var rightLlvmName = visitor.GenerateAndRegisterVariableName(PolskiDataType.Int32, rightName);
         
         var leftContext = new PolskiParser.ArithmeticExpressionContext(new ParserRuleContext(), default);
         leftContext.AddChild(new TerminalNodeImpl(new CommonToken(PolskiParser.IDENTIFIER, leftName)));
