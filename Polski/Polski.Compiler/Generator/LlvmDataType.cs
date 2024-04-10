@@ -11,7 +11,7 @@ public static class LlvmDataType
     {
         return type switch
         {
-            PolskiDataType.Int => Int,
+            PolskiDataType.Int32 => Int,
             PolskiDataType.Float => Float,
             _ => throw new Exception($"Unknown type {type}.")
         };

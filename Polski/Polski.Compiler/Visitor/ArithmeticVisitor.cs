@@ -1,3 +1,8 @@
+using System.Text;
+using Polski.Compiler.Common;
+using Polski.Compiler.Generator;
+using Polski.Compiler.LanguageDefinition;
+
 namespace Polski.Compiler.Visitor;
 
 /// <summary>
@@ -9,15 +14,11 @@ public partial class PolskiVisitor
     {
         if (context.IDENTIFIER() is { } identifier)
         {
-            if (!TryGetIdentifier(identifier.GetText(), out var registeredIdentifier))
-            {
-                throw new Exception($"Identifier {identifier.GetText()} is not declared in this scope.");
-            }
+            _scopeContext.TryGetMember(identifier.GetText(), out var identifierMember);
 
             return new NodeResult
             {
-                Identifier = registeredIdentifier!.LlvmName,
-                Type = registeredIdentifier.LlvmType
+                PolskiMember = new PolskiMember(identifierMember.PolskiMember.Name, identifierMember.PolskiMember.Type)
             };
         }
 
@@ -26,14 +27,21 @@ public partial class PolskiVisitor
             var left = Visit(context.arithmeticExpression(0));
             var right = Visit(context.arithmeticExpression(1));
 
-            var resultIdentifier = GenerateAndRegisterLlvmVariableName(left.Type!);
+            var sb = new StringBuilder();
+            sb.Append(left);
+            sb.Append(right);
+
+            var leftOperand = PrepareForOperation(left, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
             
+            sb.Append(LlvmGenerator.CallMulI32(resultMember.LlvmName, leftOperand, rightOperand));
+
             return new NodeResult
             {
                 // todo use proper division operator with respect to operand types
-                Code = $"%{resultIdentifier} = mul {left.Type} %{left.Identifier}, %{right.Identifier}\n",
-                Identifier = resultIdentifier,
-                Type = left.Type
+                Code = sb.ToString(),
+                PolskiMember = resultMember.PolskiMember
             };
         }
 
@@ -42,14 +50,21 @@ public partial class PolskiVisitor
             var left = Visit(context.arithmeticExpression(0));
             var right = Visit(context.arithmeticExpression(1));
 
-            var resultIdentifier = GenerateAndRegisterLlvmVariableName(left.Type!);
+            var sb = new StringBuilder();
+            sb.Append(left);
+            sb.Append(right);
+
+            var leftOperand = PrepareForOperation(left, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
+            
+            sb.Append(LlvmGenerator.CallDivI32(resultMember.LlvmName, leftOperand, rightOperand));
             
             return new NodeResult
             {
                 // todo use proper division operator with respect to operand types
-                Code = $"%{resultIdentifier} = div {left.Type} %{left.Identifier}, %{right.Identifier}\n",
-                Identifier = resultIdentifier,
-                Type = left.Type
+                Code = sb.ToString(),
+                PolskiMember = resultMember.PolskiMember
             };
         }
 
@@ -58,14 +73,21 @@ public partial class PolskiVisitor
             var left = Visit(context.arithmeticExpression(0));
             var right = Visit(context.arithmeticExpression(1));
 
-            var resultIdentifier = GenerateAndRegisterLlvmVariableName(left.Type!);
+            var sb = new StringBuilder();
+            sb.Append(left);
+            sb.Append(right);
+
+            var leftOperand = PrepareForOperation(left, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
+            
+            sb.Append(LlvmGenerator.CallAddI32(resultMember.LlvmName, leftOperand, rightOperand));
             
             return new NodeResult
             {
                 // todo use proper division operator with respect to operand types
-                Code = $"%{resultIdentifier} = add {left.Type} %{left.Identifier}, %{right.Identifier}\n",
-                Identifier = resultIdentifier,
-                Type = left.Type
+                Code = sb.ToString(),
+                PolskiMember = resultMember.PolskiMember
             };
         }
 
@@ -74,17 +96,88 @@ public partial class PolskiVisitor
             var left = Visit(context.arithmeticExpression(0));
             var right = Visit(context.arithmeticExpression(1));
 
-            var resultIdentifier = GenerateAndRegisterLlvmVariableName(left.Type!);
+            var sb = new StringBuilder();
+            sb.Append(left);
+            sb.Append(right);
+
+            var leftOperand = PrepareForOperation(left, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
+            
+            sb.Append(LlvmGenerator.CallSubI32(resultMember.LlvmName, leftOperand, rightOperand));
             
             return new NodeResult
             {
                 // todo use proper division operator with respect to operand types
-                Code = $"%{resultIdentifier} = sub {left.Type} %{left.Identifier}, %{right.Identifier}\n",
-                Identifier = resultIdentifier,
-                Type = left.Type
+                Code = sb.ToString(),
+                PolskiMember = resultMember.PolskiMember
             };
         }
 
-        return string.Empty; // todo
+        var number = context.number();
+        if (number is not null)
+        {
+            return Visit(number);
+        }
+
+        // todo exception
+        throw new InvalidOperationException();
+    }
+
+    public override NodeResult VisitNumber(PolskiParser.NumberContext context)
+    {
+        var integer = context.INTEGER_NUMBER();
+        
+        if (integer is not null)
+        {
+            return new NodeResult
+            {
+                PolskiMember = new PolskiMember(PolskiDataType.Int32),
+                Value = integer.GetText()
+            };
+        }
+
+        var real = context.REAL_NUMBER();
+        if (real is not null)
+        {
+            return new NodeResult
+            {
+                PolskiMember = new PolskiMember(PolskiDataType.Float),
+                Value = real.GetText()
+            };
+        }
+
+        throw new InvalidOperationException();
+    }
+
+    private Operand PrepareForOperation(NodeResult nodeResult, StringBuilder stringBuilder)
+    {
+        Operand operand;
+        switch (nodeResult.ResultKind)
+        {
+            case ResultKind.Variable:
+                _scopeContext.TryGetMember(nodeResult.PolskiMember.Name, out var leftMember);
+                if (leftMember.StackAllocated)
+                { 
+                    var newMember = _scopeContext.AddMember(nodeResult.PolskiMember.Type);
+                    operand = new Operand(ResultKind.Variable, newMember.LlvmName);
+                    stringBuilder.Append(LlvmGenerator.LoadValue(
+                        newMember.LlvmName,
+                        leftMember.LlvmName,
+                        newMember.LlvmType));
+                }
+                else
+                {
+                    operand = new Operand(ResultKind.Variable, leftMember.LlvmName);
+                }
+                break;
+            case ResultKind.Value:
+                operand = new Operand(ResultKind.Value, nodeResult.Value);
+                break;
+            default:
+                throw new NotSupportedException($"{nameof(ResultKind)}: ${nodeResult.ResultKind} is not supported");
+        }
+
+        return operand;
     }
 }

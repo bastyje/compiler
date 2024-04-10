@@ -1,3 +1,5 @@
+using Polski.Compiler.Common;
+
 namespace Polski.Compiler.Visitor;
 
 public partial class PolskiVisitor
@@ -11,7 +13,7 @@ public partial class PolskiVisitor
     {
         return new NodeResult
         {
-            Type = context.GetText()
+            PolskiMember = new PolskiMember(context.GetText())
         };
     }
 }
