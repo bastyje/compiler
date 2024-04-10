@@ -1,5 +1,6 @@
 using System.Text;
 using Polski.Compiler.Common;
+using Polski.Compiler.exception;
 using Polski.Compiler.Generator;
 using Polski.Compiler.LanguageDefinition;
 
@@ -121,7 +122,7 @@ public partial class PolskiVisitor
         }
 
         // todo exception
-        throw new InvalidOperationException();
+        throw new CompilationException("Invalid arithmetic expression", context.Start.Line, context.arithmeticExpression(0).Stop.Column);
     }
 
     public override NodeResult VisitNumber(PolskiParser.NumberContext context)
@@ -147,7 +148,7 @@ public partial class PolskiVisitor
             };
         }
 
-        throw new InvalidOperationException();
+        throw new CompilationException($"Invalid number type {context.GetText()}", context);
     }
 
     private Operand PrepareForOperation(NodeResult nodeResult, StringBuilder stringBuilder)

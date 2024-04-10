@@ -1,4 +1,5 @@
-﻿using Polski.Compiler.Generator;
+﻿using Polski.Compiler.exception;
+using Polski.Compiler.Generator;
 
 namespace Polski.Compiler.Visitor;
 
@@ -32,11 +33,19 @@ public partial class PolskiVisitor
             var resultName = "tmp" + strCounter++;
 
             var nodeResult = Visit(context.IDENTIFIER());
-            var variableType = nodeResult.PolskiMember.Type; 
+            var variableType = nodeResult?.PolskiMember.Type; 
+            if(variableType is null)
+            {
+                throw new CompilationException($"Variable {context.IDENTIFIER().GetText()} not found", context.IDENTIFIER());
+            }
             
             llvmIR += LlvmGenerator.LoadValue(resultName, variableName, variableType);
             
             var formatSpecifier = GetFormatSpecifier(variableType);
+            if(formatSpecifier is null)
+            {
+                throw new CompilationException($"Invalid type {variableType}", context);
+            }
             var formatStrLabel = $"@.str{strCounter++}";
             llvmIR += $"{formatStrLabel} = private unnamed_addr constant [4 x i8] c\"{formatSpecifier}\\00\", align 1\n";
             llvmIR += $"call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* {formatStrLabel}, i32 0, i32 0), {variableType} %{resultName})\n";
@@ -54,7 +63,7 @@ public partial class PolskiVisitor
         {
             case "i32": return "%d";
             case "float": return "%f";
-            default: throw new NotImplementedException($"No printf format specifier for LLVM type: {llvmType}");
+            default: return null;
         }
     }
     
@@ -71,11 +80,14 @@ public partial class PolskiVisitor
         var variableName = context.IDENTIFIER().GetText();
         var resultName = "tmp" + strCounter++;
 
-        // Assuming you have a mechanism to get the type of a variable (similar to how it's done in VisitPrintStatement)
         var nodeResult = Visit(context.IDENTIFIER());
         var variableType = nodeResult.PolskiMember.Type; 
 
         var formatSpecifier = GetFormatSpecifier(variableType);
+        if(formatSpecifier is null)
+        {
+            throw new CompilationException($"Invalid type {variableType}", context);
+        }
         var formatStrLabel = $"@.str{strCounter++}";
         llvmIR += $"{formatStrLabel} = private unnamed_addr constant [3 x i8] c\"{formatSpecifier}\\00\", align 1\n";
         llvmIR += $"call i32 (i8*, ...) @scanf(i8* getelementptr ([3 x i8], [3 x i8]* {formatStrLabel}, i32 0, i32 0), {variableType}* %{resultName})\n";

@@ -1,16 +1,15 @@
-﻿using Cocona;
+﻿using Antlr4.Runtime;
+using Cocona;
 using Polski.Compiler;
+using Polski.Compiler.listener;
 
 var builder = CoconaApp.CreateBuilder();
 var app = builder.Build();
 
 app.AddCommand(([Option('o')] string? output) =>
 {
-    const string code =
-        """
-        int j = 3;
-        int i = j + 4 / 2 * 5;
-        """;
+    
+    const string code = "princt(g);";
     
     var compiled = Compiler.Compile(code);
     

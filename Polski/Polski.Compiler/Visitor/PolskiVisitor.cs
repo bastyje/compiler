@@ -1,5 +1,6 @@
 using System.Text;
 using Polski.Compiler.Common;
+using Polski.Compiler.exception;
 using Polski.Compiler.Generator;
 
 namespace Polski.Compiler.Visitor;
@@ -52,9 +53,20 @@ public partial class PolskiVisitor : PolskiBaseVisitor<NodeResult>
         {
             return Visit(expression);
         }
-
+        
+        var printStatement = context.printStatement();
+        if(printStatement is not null)
+        {
+            return Visit(printStatement);
+        }
+        
+        var readStatement = context.readStatement();
+        if(readStatement is not null)
+        {
+            return Visit(readStatement);
+        }
         // exception
-        throw new Exception("parser error");
+        throw new CompilationException($"Parser error: \"{context}\"", context);
     }
 
     public override NodeResult VisitExpression(PolskiParser.ExpressionContext context)

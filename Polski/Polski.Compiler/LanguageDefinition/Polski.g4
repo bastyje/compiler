@@ -18,7 +18,7 @@ statement
     ;
 
 printStatement
-    : PRINT '(' QUOTED_STRING | IDENTIFIER')'
+    : PRINT '(' (QUOTED_STRING | IDENTIFIER) ')'
     ;
 
 readStatement
