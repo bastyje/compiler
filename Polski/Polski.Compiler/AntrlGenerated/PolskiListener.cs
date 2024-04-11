@@ -61,6 +61,26 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] PolskiParser.StatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.print"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrint([NotNull] PolskiParser.PrintContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.print"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrint([NotNull] PolskiParser.PrintContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.read"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRead([NotNull] PolskiParser.ReadContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.read"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRead([NotNull] PolskiParser.ReadContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
