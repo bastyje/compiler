@@ -38,15 +38,17 @@ public partial class PolskiParser : Parser {
 	public const int
 		SEMICOLON=1, INT=2, INT64=3, FLOAT=4, DOUBLE=5, AND=6, EQUALS=7, GREATER_OR_EQUALS=8, 
 		GREATER=9, LESS_OR_EQUALS=10, LESS=11, NOT=12, NOT_EQUALS=13, OR=14, XOR=15, 
-		ASSIGN=16, DIVIDE=17, MINUS=18, MULTIPLY=19, PLUS=20, WHITESPACE=21, INTEGER_NUMBER=22, 
-		REAL_NUMBER=23, IDENTIFIER=24;
+		ASSIGN=16, DIVIDE=17, MINUS=18, MULTIPLY=19, PLUS=20, WHITESPACE=21, BIG_REAL_NUMBER=22, 
+		REAL_NUMBER=23, BIG_INTEGER_NUMBER=24, INTEGER_NUMBER=25, IDENTIFIER=26;
 	public const int
 		RULE_program = 0, RULE_line = 1, RULE_statement = 2, RULE_assignment = 3, 
-		RULE_expression = 4, RULE_arithmeticExpression = 5, RULE_number = 6, RULE_declaration = 7, 
-		RULE_definition = 8, RULE_type = 9, RULE_numericType = 10;
+		RULE_expression = 4, RULE_additiveExpression = 5, RULE_multiplicativeExpression = 6, 
+		RULE_unaryExpression = 7, RULE_primaryExpression = 8, RULE_number = 9, 
+		RULE_declaration = 10, RULE_definition = 11, RULE_type = 12, RULE_numericType = 13;
 	public static readonly string[] ruleNames = {
-		"program", "line", "statement", "assignment", "expression", "arithmeticExpression", 
-		"number", "declaration", "definition", "type", "numericType"
+		"program", "line", "statement", "assignment", "expression", "additiveExpression", 
+		"multiplicativeExpression", "unaryExpression", "primaryExpression", "number", 
+		"declaration", "definition", "type", "numericType"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -58,7 +60,8 @@ public partial class PolskiParser : Parser {
 		null, "SEMICOLON", "INT", "INT64", "FLOAT", "DOUBLE", "AND", "EQUALS", 
 		"GREATER_OR_EQUALS", "GREATER", "LESS_OR_EQUALS", "LESS", "NOT", "NOT_EQUALS", 
 		"OR", "XOR", "ASSIGN", "DIVIDE", "MINUS", "MULTIPLY", "PLUS", "WHITESPACE", 
-		"INTEGER_NUMBER", "REAL_NUMBER", "IDENTIFIER"
+		"BIG_REAL_NUMBER", "REAL_NUMBER", "BIG_INTEGER_NUMBER", "INTEGER_NUMBER", 
+		"IDENTIFIER"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -130,20 +133,20 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 23;
+			State = 29;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 22;
+				State = 28;
 				line();
 				}
 				}
-				State = 25;
+				State = 31;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 29360188L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 130023484L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -192,9 +195,9 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27;
+			State = 33;
 			statement();
-			State = 28;
+			State = 34;
 			Match(SEMICOLON);
 			}
 		}
@@ -250,34 +253,34 @@ public partial class PolskiParser : Parser {
 		StatementContext _localctx = new StatementContext(Context, State);
 		EnterRule(_localctx, 4, RULE_statement);
 		try {
-			State = 34;
+			State = 40;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 30;
+				State = 36;
 				declaration();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 31;
+				State = 37;
 				definition();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 32;
+				State = 38;
 				assignment();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 33;
+				State = 39;
 				expression();
 				}
 				break;
@@ -330,11 +333,11 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 36;
+			State = 42;
 			Match(IDENTIFIER);
-			State = 37;
+			State = 43;
 			Match(ASSIGN);
-			State = 38;
+			State = 44;
 			expression();
 			}
 		}
@@ -350,8 +353,8 @@ public partial class PolskiParser : Parser {
 	}
 
 	public partial class ExpressionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ArithmeticExpressionContext arithmeticExpression() {
-			return GetRuleContext<ArithmeticExpressionContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public AdditiveExpressionContext additiveExpression() {
+			return GetRuleContext<AdditiveExpressionContext>(0);
 		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -383,8 +386,8 @@ public partial class PolskiParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 40;
-			arithmeticExpression(0);
+			State = 46;
+			additiveExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -398,146 +401,76 @@ public partial class PolskiParser : Parser {
 		return _localctx;
 	}
 
-	public partial class ArithmeticExpressionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(PolskiParser.IDENTIFIER, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public NumberContext number() {
-			return GetRuleContext<NumberContext>(0);
+	public partial class AdditiveExpressionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public MultiplicativeExpressionContext[] multiplicativeExpression() {
+			return GetRuleContexts<MultiplicativeExpressionContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ArithmeticExpressionContext[] arithmeticExpression() {
-			return GetRuleContexts<ArithmeticExpressionContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public MultiplicativeExpressionContext multiplicativeExpression(int i) {
+			return GetRuleContext<MultiplicativeExpressionContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ArithmeticExpressionContext arithmeticExpression(int i) {
-			return GetRuleContext<ArithmeticExpressionContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] PLUS() { return GetTokens(PolskiParser.PLUS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS(int i) {
+			return GetToken(PolskiParser.PLUS, i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULTIPLY() { return GetToken(PolskiParser.MULTIPLY, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIVIDE() { return GetToken(PolskiParser.DIVIDE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(PolskiParser.PLUS, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(PolskiParser.MINUS, 0); }
-		public ArithmeticExpressionContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] MINUS() { return GetTokens(PolskiParser.MINUS); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS(int i) {
+			return GetToken(PolskiParser.MINUS, i);
+		}
+		public AdditiveExpressionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_arithmeticExpression; } }
+		public override int RuleIndex { get { return RULE_additiveExpression; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IPolskiListener typedListener = listener as IPolskiListener;
-			if (typedListener != null) typedListener.EnterArithmeticExpression(this);
+			if (typedListener != null) typedListener.EnterAdditiveExpression(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IPolskiListener typedListener = listener as IPolskiListener;
-			if (typedListener != null) typedListener.ExitArithmeticExpression(this);
+			if (typedListener != null) typedListener.ExitAdditiveExpression(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IPolskiVisitor<TResult> typedVisitor = visitor as IPolskiVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitArithmeticExpression(this);
+			if (typedVisitor != null) return typedVisitor.VisitAdditiveExpression(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ArithmeticExpressionContext arithmeticExpression() {
-		return arithmeticExpression(0);
-	}
-
-	private ArithmeticExpressionContext arithmeticExpression(int _p) {
-		ParserRuleContext _parentctx = Context;
-		int _parentState = State;
-		ArithmeticExpressionContext _localctx = new ArithmeticExpressionContext(Context, _parentState);
-		ArithmeticExpressionContext _prevctx = _localctx;
-		int _startState = 10;
-		EnterRecursionRule(_localctx, 10, RULE_arithmeticExpression, _p);
+	public AdditiveExpressionContext additiveExpression() {
+		AdditiveExpressionContext _localctx = new AdditiveExpressionContext(Context, State);
+		EnterRule(_localctx, 10, RULE_additiveExpression);
+		int _la;
 		try {
-			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 45;
+			State = 48;
+			multiplicativeExpression();
+			State = 53;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case IDENTIFIER:
+			_la = TokenStream.LA(1);
+			while (_la==MINUS || _la==PLUS) {
 				{
-				State = 43;
-				Match(IDENTIFIER);
-				}
-				break;
-			case INTEGER_NUMBER:
-			case REAL_NUMBER:
 				{
-				State = 44;
-				number();
+				State = 49;
+				_la = TokenStream.LA(1);
+				if ( !(_la==MINUS || _la==PLUS) ) {
+				ErrorHandler.RecoverInline(this);
 				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			Context.Stop = TokenStream.LT(-1);
-			State = 61;
-			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
-			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					if ( ParseListeners!=null )
-						TriggerExitRuleEvent();
-					_prevctx = _localctx;
-					{
-					State = 59;
-					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
-					case 1:
-						{
-						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 47;
-						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
-						State = 48;
-						Match(MULTIPLY);
-						State = 49;
-						arithmeticExpression(7);
-						}
-						break;
-					case 2:
-						{
-						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 50;
-						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
-						State = 51;
-						Match(DIVIDE);
-						State = 52;
-						arithmeticExpression(6);
-						}
-						break;
-					case 3:
-						{
-						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 53;
-						if (!(Precpred(Context, 4))) throw new FailedPredicateException(this, "Precpred(Context, 4)");
-						State = 54;
-						Match(PLUS);
-						State = 55;
-						arithmeticExpression(5);
-						}
-						break;
-					case 4:
-						{
-						_localctx = new ArithmeticExpressionContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_arithmeticExpression);
-						State = 56;
-						if (!(Precpred(Context, 3))) throw new FailedPredicateException(this, "Precpred(Context, 3)");
-						State = 57;
-						Match(MINUS);
-						State = 58;
-						arithmeticExpression(4);
-						}
-						break;
-					}
-					} 
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
 				}
-				State = 63;
+				State = 50;
+				multiplicativeExpression();
+				}
+				}
+				State = 55;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,4,Context);
+				_la = TokenStream.LA(1);
 			}
 			}
 		}
@@ -547,14 +480,217 @@ public partial class PolskiParser : Parser {
 			ErrorHandler.Recover(this, re);
 		}
 		finally {
-			UnrollRecursionContexts(_parentctx);
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class MultiplicativeExpressionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public UnaryExpressionContext[] unaryExpression() {
+			return GetRuleContexts<UnaryExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public UnaryExpressionContext unaryExpression(int i) {
+			return GetRuleContext<UnaryExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] MULTIPLY() { return GetTokens(PolskiParser.MULTIPLY); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULTIPLY(int i) {
+			return GetToken(PolskiParser.MULTIPLY, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] DIVIDE() { return GetTokens(PolskiParser.DIVIDE); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIVIDE(int i) {
+			return GetToken(PolskiParser.DIVIDE, i);
+		}
+		public MultiplicativeExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_multiplicativeExpression; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.EnterMultiplicativeExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.ExitMultiplicativeExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IPolskiVisitor<TResult> typedVisitor = visitor as IPolskiVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMultiplicativeExpression(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public MultiplicativeExpressionContext multiplicativeExpression() {
+		MultiplicativeExpressionContext _localctx = new MultiplicativeExpressionContext(Context, State);
+		EnterRule(_localctx, 12, RULE_multiplicativeExpression);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 56;
+			unaryExpression();
+			State = 61;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==DIVIDE || _la==MULTIPLY) {
+				{
+				{
+				State = 57;
+				_la = TokenStream.LA(1);
+				if ( !(_la==DIVIDE || _la==MULTIPLY) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
+				State = 58;
+				unaryExpression();
+				}
+				}
+				State = 63;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class UnaryExpressionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public PrimaryExpressionContext primaryExpression() {
+			return GetRuleContext<PrimaryExpressionContext>(0);
+		}
+		public UnaryExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_unaryExpression; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.EnterUnaryExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.ExitUnaryExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IPolskiVisitor<TResult> typedVisitor = visitor as IPolskiVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitUnaryExpression(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public UnaryExpressionContext unaryExpression() {
+		UnaryExpressionContext _localctx = new UnaryExpressionContext(Context, State);
+		EnterRule(_localctx, 14, RULE_unaryExpression);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 64;
+			primaryExpression();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class PrimaryExpressionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(PolskiParser.IDENTIFIER, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NumberContext number() {
+			return GetRuleContext<NumberContext>(0);
+		}
+		public PrimaryExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_primaryExpression; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.EnterPrimaryExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IPolskiListener typedListener = listener as IPolskiListener;
+			if (typedListener != null) typedListener.ExitPrimaryExpression(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IPolskiVisitor<TResult> typedVisitor = visitor as IPolskiVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPrimaryExpression(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public PrimaryExpressionContext primaryExpression() {
+		PrimaryExpressionContext _localctx = new PrimaryExpressionContext(Context, State);
+		EnterRule(_localctx, 16, RULE_primaryExpression);
+		try {
+			State = 68;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case IDENTIFIER:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 66;
+				Match(IDENTIFIER);
+				}
+				break;
+			case BIG_REAL_NUMBER:
+			case REAL_NUMBER:
+			case BIG_INTEGER_NUMBER:
+			case INTEGER_NUMBER:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 67;
+				number();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
 		}
 		return _localctx;
 	}
 
 	public partial class NumberContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INTEGER_NUMBER() { return GetToken(PolskiParser.INTEGER_NUMBER, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BIG_INTEGER_NUMBER() { return GetToken(PolskiParser.BIG_INTEGER_NUMBER, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode REAL_NUMBER() { return GetToken(PolskiParser.REAL_NUMBER, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BIG_REAL_NUMBER() { return GetToken(PolskiParser.BIG_REAL_NUMBER, 0); }
 		public NumberContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -581,14 +717,14 @@ public partial class PolskiParser : Parser {
 	[RuleVersion(0)]
 	public NumberContext number() {
 		NumberContext _localctx = new NumberContext(Context, State);
-		EnterRule(_localctx, 12, RULE_number);
+		EnterRule(_localctx, 18, RULE_number);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 64;
+			State = 70;
 			_la = TokenStream.LA(1);
-			if ( !(_la==INTEGER_NUMBER || _la==REAL_NUMBER) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 62914560L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -639,13 +775,13 @@ public partial class PolskiParser : Parser {
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
 		DeclarationContext _localctx = new DeclarationContext(Context, State);
-		EnterRule(_localctx, 14, RULE_declaration);
+		EnterRule(_localctx, 20, RULE_declaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 66;
+			State = 72;
 			type();
-			State = 67;
+			State = 73;
 			Match(IDENTIFIER);
 			}
 		}
@@ -694,15 +830,15 @@ public partial class PolskiParser : Parser {
 	[RuleVersion(0)]
 	public DefinitionContext definition() {
 		DefinitionContext _localctx = new DefinitionContext(Context, State);
-		EnterRule(_localctx, 16, RULE_definition);
+		EnterRule(_localctx, 22, RULE_definition);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 69;
+			State = 75;
 			declaration();
-			State = 70;
+			State = 76;
 			Match(ASSIGN);
-			State = 71;
+			State = 77;
 			expression();
 			}
 		}
@@ -747,11 +883,11 @@ public partial class PolskiParser : Parser {
 	[RuleVersion(0)]
 	public TypeContext type() {
 		TypeContext _localctx = new TypeContext(Context, State);
-		EnterRule(_localctx, 18, RULE_type);
+		EnterRule(_localctx, 24, RULE_type);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 73;
+			State = 79;
 			numericType();
 			}
 		}
@@ -797,12 +933,12 @@ public partial class PolskiParser : Parser {
 	[RuleVersion(0)]
 	public NumericTypeContext numericType() {
 		NumericTypeContext _localctx = new NumericTypeContext(Context, State);
-		EnterRule(_localctx, 20, RULE_numericType);
+		EnterRule(_localctx, 26, RULE_numericType);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 75;
+			State = 81;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 60L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -824,45 +960,30 @@ public partial class PolskiParser : Parser {
 		return _localctx;
 	}
 
-	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
-		switch (ruleIndex) {
-		case 5: return arithmeticExpression_sempred((ArithmeticExpressionContext)_localctx, predIndex);
-		}
-		return true;
-	}
-	private bool arithmeticExpression_sempred(ArithmeticExpressionContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 0: return Precpred(Context, 6);
-		case 1: return Precpred(Context, 5);
-		case 2: return Precpred(Context, 4);
-		case 3: return Precpred(Context, 3);
-		}
-		return true;
-	}
-
 	private static int[] _serializedATN = {
-		4,1,24,78,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,4,0,24,8,0,11,0,12,0,25,1,1,1,1,1,1,
-		1,2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,1,3,1,3,1,4,1,4,1,5,1,5,1,5,3,5,46,
-		8,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,60,8,5,10,5,12,
-		5,63,9,5,1,6,1,6,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,10,1,10,1,10,0,
-		1,10,11,0,2,4,6,8,10,12,14,16,18,20,0,2,1,0,22,23,1,0,2,5,75,0,23,1,0,
-		0,0,2,27,1,0,0,0,4,34,1,0,0,0,6,36,1,0,0,0,8,40,1,0,0,0,10,45,1,0,0,0,
-		12,64,1,0,0,0,14,66,1,0,0,0,16,69,1,0,0,0,18,73,1,0,0,0,20,75,1,0,0,0,
-		22,24,3,2,1,0,23,22,1,0,0,0,24,25,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,
-		26,1,1,0,0,0,27,28,3,4,2,0,28,29,5,1,0,0,29,3,1,0,0,0,30,35,3,14,7,0,31,
-		35,3,16,8,0,32,35,3,6,3,0,33,35,3,8,4,0,34,30,1,0,0,0,34,31,1,0,0,0,34,
-		32,1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,37,5,24,0,0,37,38,5,16,0,0,38,
-		39,3,8,4,0,39,7,1,0,0,0,40,41,3,10,5,0,41,9,1,0,0,0,42,43,6,5,-1,0,43,
-		46,5,24,0,0,44,46,3,12,6,0,45,42,1,0,0,0,45,44,1,0,0,0,46,61,1,0,0,0,47,
-		48,10,6,0,0,48,49,5,19,0,0,49,60,3,10,5,7,50,51,10,5,0,0,51,52,5,17,0,
-		0,52,60,3,10,5,6,53,54,10,4,0,0,54,55,5,20,0,0,55,60,3,10,5,5,56,57,10,
-		3,0,0,57,58,5,18,0,0,58,60,3,10,5,4,59,47,1,0,0,0,59,50,1,0,0,0,59,53,
-		1,0,0,0,59,56,1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,61,62,1,0,0,0,62,11,
-		1,0,0,0,63,61,1,0,0,0,64,65,7,0,0,0,65,13,1,0,0,0,66,67,3,18,9,0,67,68,
-		5,24,0,0,68,15,1,0,0,0,69,70,3,14,7,0,70,71,5,16,0,0,71,72,3,8,4,0,72,
-		17,1,0,0,0,73,74,3,20,10,0,74,19,1,0,0,0,75,76,7,1,0,0,76,21,1,0,0,0,5,
-		25,34,45,59,61
+		4,1,26,84,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,1,0,4,0,30,
+		8,0,11,0,12,0,31,1,1,1,1,1,1,1,2,1,2,1,2,1,2,3,2,41,8,2,1,3,1,3,1,3,1,
+		3,1,4,1,4,1,5,1,5,1,5,5,5,52,8,5,10,5,12,5,55,9,5,1,6,1,6,1,6,5,6,60,8,
+		6,10,6,12,6,63,9,6,1,7,1,7,1,8,1,8,3,8,69,8,8,1,9,1,9,1,10,1,10,1,10,1,
+		11,1,11,1,11,1,11,1,12,1,12,1,13,1,13,1,13,0,0,14,0,2,4,6,8,10,12,14,16,
+		18,20,22,24,26,0,4,2,0,18,18,20,20,2,0,17,17,19,19,1,0,22,25,1,0,2,5,76,
+		0,29,1,0,0,0,2,33,1,0,0,0,4,40,1,0,0,0,6,42,1,0,0,0,8,46,1,0,0,0,10,48,
+		1,0,0,0,12,56,1,0,0,0,14,64,1,0,0,0,16,68,1,0,0,0,18,70,1,0,0,0,20,72,
+		1,0,0,0,22,75,1,0,0,0,24,79,1,0,0,0,26,81,1,0,0,0,28,30,3,2,1,0,29,28,
+		1,0,0,0,30,31,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,0,32,1,1,0,0,0,33,34,3,
+		4,2,0,34,35,5,1,0,0,35,3,1,0,0,0,36,41,3,20,10,0,37,41,3,22,11,0,38,41,
+		3,6,3,0,39,41,3,8,4,0,40,36,1,0,0,0,40,37,1,0,0,0,40,38,1,0,0,0,40,39,
+		1,0,0,0,41,5,1,0,0,0,42,43,5,26,0,0,43,44,5,16,0,0,44,45,3,8,4,0,45,7,
+		1,0,0,0,46,47,3,10,5,0,47,9,1,0,0,0,48,53,3,12,6,0,49,50,7,0,0,0,50,52,
+		3,12,6,0,51,49,1,0,0,0,52,55,1,0,0,0,53,51,1,0,0,0,53,54,1,0,0,0,54,11,
+		1,0,0,0,55,53,1,0,0,0,56,61,3,14,7,0,57,58,7,1,0,0,58,60,3,14,7,0,59,57,
+		1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,61,62,1,0,0,0,62,13,1,0,0,0,63,61,
+		1,0,0,0,64,65,3,16,8,0,65,15,1,0,0,0,66,69,5,26,0,0,67,69,3,18,9,0,68,
+		66,1,0,0,0,68,67,1,0,0,0,69,17,1,0,0,0,70,71,7,2,0,0,71,19,1,0,0,0,72,
+		73,3,24,12,0,73,74,5,26,0,0,74,21,1,0,0,0,75,76,3,20,10,0,76,77,5,16,0,
+		0,77,78,3,8,4,0,78,23,1,0,0,0,79,80,3,26,13,0,80,25,1,0,0,0,81,82,7,3,
+		0,0,82,27,1,0,0,0,5,31,40,53,61,68
 	};
 
 	public static readonly ATN _ATN =

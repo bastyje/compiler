@@ -5,7 +5,7 @@ namespace Polski.Compiler.Visitor;
 
 public partial class PolskiVisitor
 {
-    private ScopeContext _scopeContext = null!;
+    private readonly ScopeContext _scopeContext;
     
     public override NodeResult VisitDeclaration(PolskiParser.DeclarationContext context)
     {
@@ -16,7 +16,7 @@ public partial class PolskiVisitor
         
         return new NodeResult
         {
-            Code = LlvmGenerator.AllocateVariable(member.LlvmName, member.LlvmType!),
+            Code = LlvmGenerator.AllocateVariable(member.LlvmName, member.LlvmType),
             PolskiMember = new PolskiMember(identifier, type.PolskiMember.Type)
         };
     }
@@ -29,7 +29,9 @@ public partial class PolskiVisitor
         if (declarationStatement.PolskiMember.Type != expression.PolskiMember.Type)
         {
             // todo exception
-            throw new Exception($"cannot assign not matching types: {declarationStatement.PolskiMember.Type} and {expression.PolskiMember.Type}");
+            throw new InvalidOperationException(
+                $"Cannot assign not matching types: {declarationStatement.PolskiMember.Type} " +
+                $"and {expression.PolskiMember.Type}");
         }
 
         _scopeContext.TryGetMember(declarationStatement.PolskiMember.Name, out var declarationMember);

@@ -19,7 +19,6 @@ public partial class PolskiVisitor : PolskiBaseVisitor<NodeResult>
         _scopeContext.PushScope();
 
         var sb = new StringBuilder();
-        sb.AppendLine(LlvmGenerator.InitializeStandardFunctions());
         sb.AppendLine(LlvmGenerator.MainFunctionOpen());
         sb.AppendJoin(string.Empty, context.line().Select(l => Visit(l).Code));
         sb.AppendLine(LlvmGenerator.MainFunctionClose());
@@ -63,7 +62,7 @@ public partial class PolskiVisitor : PolskiBaseVisitor<NodeResult>
 
     public override NodeResult VisitExpression(PolskiParser.ExpressionContext context)
     {
-        return Visit(context.arithmeticExpression());
+        return Visit(context.additiveExpression());
     }
 }
 
