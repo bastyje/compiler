@@ -6,6 +6,7 @@ public static class PolskiDataType
     public const string Int64 = "bigint";
     public const string Float = "float";
     public const string Double = "double";
+    public const string Anonymous = "anonymous";
     
     public static bool IsKnownType(string type)
     {

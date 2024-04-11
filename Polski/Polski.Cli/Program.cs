@@ -21,10 +21,14 @@ app.AddCommand((
     {
         const string code =
             """
-            j = 0;
-            int i = 1;
+            float j = 2.0;
+            read j;
+            print j;
             """;
-        Compiler.Compile(code);
+
+        var compiled = Compiler.Compile(code);
+        Console.WriteLine(compiled);
+        File.WriteAllText(output, compiled);
     }
     else
     {

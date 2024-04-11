@@ -50,6 +50,18 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] PolskiParser.StatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.print"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrint([NotNull] PolskiParser.PrintContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.read"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRead([NotNull] PolskiParser.ReadContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.assignment"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

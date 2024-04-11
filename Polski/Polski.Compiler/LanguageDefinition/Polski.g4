@@ -13,13 +13,22 @@ statement
     | definition
     | assignment
     | expression
+    | print
+    | read
+    ;
+    
+print
+    : 'print' expression
+    ;
+    
+read
+    : 'read' IDENTIFIER
     ;
     
 assignment
     : IDENTIFIER ASSIGN expression;
     
 expression
-//    : arithmeticExpression
     : additiveExpression
     ;
     
@@ -39,15 +48,6 @@ primaryExpression
     : IDENTIFIER
     | number
     ;
-    
-//arithmeticExpression
-//    : arithmeticExpression MULTIPLY arithmeticExpression
-//    | arithmeticExpression DIVIDE arithmeticExpression
-//    | arithmeticExpression PLUS arithmeticExpression
-//    | arithmeticExpression MINUS arithmeticExpression
-//    | IDENTIFIER
-//    | number
-//    ;
 
 number
     : INTEGER_NUMBER

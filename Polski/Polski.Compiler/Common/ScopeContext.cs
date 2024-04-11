@@ -1,3 +1,5 @@
+using Polski.Compiler.LanguageDefinition;
+
 namespace Polski.Compiler.Common;
 
 public class ScopeContext
@@ -81,6 +83,11 @@ public class ScopeContext
             member = null;
         }
         return member is not null;
+    }
+    
+    public void AddAnonymousMember()
+    {
+        CurrentScopeMembers.Add(GenerateMember(PolskiDataType.Anonymous, true));
     }
 
     private Member GenerateMember(PolskiMember polskiMember, bool stackAllocated)

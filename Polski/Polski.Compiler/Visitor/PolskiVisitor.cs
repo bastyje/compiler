@@ -12,12 +12,12 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
     public override NodeResult VisitProgram(PolskiParser.ProgramContext context)
     {
         _scopeContext.PushScope();
-
-        var sb = new StringBuilder();
-        sb.AppendLine(LlvmGenerator.MainFunctionOpen());
-        sb.AppendJoin(string.Empty, context.line().Select(l => Visit(l).Code));
-        sb.AppendLine(LlvmGenerator.MainFunctionClose());
-        return sb.ToString();
+        return new StringBuilder()
+            .AppendLine(LlvmGenerator.Header())
+            .AppendLine(LlvmGenerator.MainFunctionOpen())
+            .AppendJoin(string.Empty, context.line().Select(l => Visit(l).Code))
+            .AppendLine(LlvmGenerator.MainFunctionClose())
+            .ToString();
     }
 
     public override NodeResult VisitLine(PolskiParser.LineContext context)
@@ -27,32 +27,38 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
 
     public override NodeResult VisitStatement(PolskiParser.StatementContext context)
     {
-        var declaration = context.declaration();
-        if (declaration is not null)
+        if (context.declaration() is {} declaration)
         {
             return Visit(declaration);
         }
 
-        var definition = context.definition();
-        if (definition is not null)
+        if (context.definition() is {} definition)
         {
             return Visit(definition);
         }
 
-        var assignment = context.assignment();
-        if (assignment is not null)
+        if (context.assignment() is {} assignment)
         {
             return Visit(assignment);
         }
         
-        var expression = context.expression();
-        if (expression is not null)
+        if (context.expression() is {} expression)
         {
             return Visit(expression);
         }
 
+        if (context.print() is { } print)
+        {
+            return Visit(print);
+        }
+        
+        if (context.read() is { } read)
+        {
+            return Visit(read);
+        }
+
         // exception
-        throw new Exception("parser error");
+        throw new InvalidOperationException();
     }
 
     public override NodeResult VisitExpression(PolskiParser.ExpressionContext context)
