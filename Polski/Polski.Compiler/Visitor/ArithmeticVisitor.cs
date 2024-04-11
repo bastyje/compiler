@@ -10,125 +10,145 @@ namespace Polski.Compiler.Visitor;
 /// </summary>
 public partial class PolskiVisitor
 {
-    public override NodeResult VisitArithmeticExpression(PolskiParser.ArithmeticExpressionContext context)
+    public override NodeResult VisitAdditiveExpression(PolskiParser.AdditiveExpressionContext context)
+    {
+        var expressions = context.multiplicativeExpression();
+
+        if (expressions.Length == 1)
+        {
+            return Visit(expressions[0]);
+        }
+
+        var sb = new StringBuilder();
+        var previousResult = Visit(expressions[0]);
+        for (var i = 0; i < expressions.Length - 1; i++)
+        {
+            var right = Visit(expressions[i + 1]);
+
+            if (previousResult.PolskiMember.Type != right.PolskiMember.Type)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot add not matching types: {previousResult.PolskiMember.Type} " +
+                    $"and {right.PolskiMember.Type}");
+            }
+            
+            sb.Append(previousResult.Code);
+            sb.Append(right.Code);
+
+            var leftOperand = PrepareForOperation(previousResult, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(previousResult.PolskiMember.Type);
+
+            if (context.PLUS() is not null)
+            {
+                sb.Append(LlvmGenerator.CallAdd(resultMember, leftOperand, rightOperand));
+            }
+            else if (context.MINUS() is not null)
+            {
+                sb.Append(LlvmGenerator.CallSub(resultMember, leftOperand, rightOperand));
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            
+            previousResult = new NodeResult
+            {
+                PolskiMember = resultMember.PolskiMember
+            };
+        }
+
+        return new NodeResult
+        {
+            Code = sb.ToString(),
+            PolskiMember = previousResult.PolskiMember
+        };
+    }
+
+    public override NodeResult VisitMultiplicativeExpression(PolskiParser.MultiplicativeExpressionContext context)
+    {
+        var expressions = context.unaryExpression();
+
+        if (expressions.Length == 1)
+        {
+            return Visit(expressions[0]);
+        }
+
+        var sb = new StringBuilder();
+        var previousResult = Visit(expressions[0]);
+        for (var i = 0; i < expressions.Length - 1; i++)
+        {
+            var right = Visit(expressions[i + 1]);
+            
+            if (previousResult.PolskiMember.Type != right.PolskiMember.Type)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot multiply not matching types: {previousResult.PolskiMember.Type} " +
+                    $"and {right.PolskiMember.Type}");
+            }
+
+            sb.Append(previousResult.Code);
+            sb.Append(right.Code);
+
+            var leftOperand = PrepareForOperation(previousResult, sb);
+            var rightOperand = PrepareForOperation(right, sb);
+            var resultMember = _scopeContext.AddMember(previousResult.PolskiMember.Type);
+            
+            if (context.GetToken(PolskiParser.MULTIPLY, i) is not null)
+            {
+                sb.Append(LlvmGenerator.CallMul(resultMember, leftOperand, rightOperand));
+            }
+            else if (context.GetToken(PolskiParser.DIVIDE, i) is not null)
+            {
+                sb.Append(LlvmGenerator.CallDiv(resultMember, leftOperand, rightOperand));
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            
+            previousResult = new NodeResult
+            {
+                PolskiMember = resultMember.PolskiMember
+            };
+        }
+
+        return new NodeResult
+        {
+            Code = sb.ToString(),
+            PolskiMember = previousResult.PolskiMember
+        };
+    }
+
+    public override NodeResult VisitUnaryExpression(PolskiParser.UnaryExpressionContext context)
+    {
+        return Visit(context.primaryExpression());
+    }
+    
+    public override NodeResult VisitPrimaryExpression(PolskiParser.PrimaryExpressionContext context)
     {
         if (context.IDENTIFIER() is { } identifier)
         {
             _scopeContext.TryGetMember(identifier.GetText(), out var identifierMember);
-
+        
             return new NodeResult
             {
                 PolskiMember = new PolskiMember(identifierMember.PolskiMember.Name, identifierMember.PolskiMember.Type)
             };
         }
-
-        if (context.MULTIPLY() is not null)
-        {
-            var left = Visit(context.arithmeticExpression(0));
-            var right = Visit(context.arithmeticExpression(1));
-
-            var sb = new StringBuilder();
-            sb.Append(left);
-            sb.Append(right);
-
-            var leftOperand = PrepareForOperation(left, sb);
-            var rightOperand = PrepareForOperation(right, sb);
-            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
-            
-            sb.Append(LlvmGenerator.CallMulI32(resultMember.LlvmName, leftOperand, rightOperand));
-
-            return new NodeResult
-            {
-                // todo use proper division operator with respect to operand types
-                Code = sb.ToString(),
-                PolskiMember = resultMember.PolskiMember
-            };
-        }
-
-        if (context.DIVIDE() is not null)
-        {
-            var left = Visit(context.arithmeticExpression(0));
-            var right = Visit(context.arithmeticExpression(1));
-
-            var sb = new StringBuilder();
-            sb.Append(left);
-            sb.Append(right);
-
-            var leftOperand = PrepareForOperation(left, sb);
-            var rightOperand = PrepareForOperation(right, sb);
-            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
-            
-            sb.Append(LlvmGenerator.CallDivI32(resultMember.LlvmName, leftOperand, rightOperand));
-            
-            return new NodeResult
-            {
-                // todo use proper division operator with respect to operand types
-                Code = sb.ToString(),
-                PolskiMember = resultMember.PolskiMember
-            };
-        }
-
-        if (context.PLUS() is not null)
-        {
-            var left = Visit(context.arithmeticExpression(0));
-            var right = Visit(context.arithmeticExpression(1));
-
-            var sb = new StringBuilder();
-            sb.Append(left);
-            sb.Append(right);
-
-            var leftOperand = PrepareForOperation(left, sb);
-            var rightOperand = PrepareForOperation(right, sb);
-            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
-            
-            sb.Append(LlvmGenerator.CallAddI32(resultMember.LlvmName, leftOperand, rightOperand));
-            
-            return new NodeResult
-            {
-                // todo use proper division operator with respect to operand types
-                Code = sb.ToString(),
-                PolskiMember = resultMember.PolskiMember
-            };
-        }
-
-        if (context.MINUS() is not null)
-        {
-            var left = Visit(context.arithmeticExpression(0));
-            var right = Visit(context.arithmeticExpression(1));
-
-            var sb = new StringBuilder();
-            sb.Append(left);
-            sb.Append(right);
-
-            var leftOperand = PrepareForOperation(left, sb);
-            var rightOperand = PrepareForOperation(right, sb);
-            var resultMember = _scopeContext.AddMember(left.PolskiMember.Type);
-            
-            sb.Append(LlvmGenerator.CallSubI32(resultMember.LlvmName, leftOperand, rightOperand));
-            
-            return new NodeResult
-            {
-                // todo use proper division operator with respect to operand types
-                Code = sb.ToString(),
-                PolskiMember = resultMember.PolskiMember
-            };
-        }
-
+        
         var number = context.number();
         if (number is not null)
         {
             return Visit(number);
         }
-
-        // todo exception
+        
         throw new InvalidOperationException();
     }
-
+    
     public override NodeResult VisitNumber(PolskiParser.NumberContext context)
     {
-        var integer = context.INTEGER_NUMBER();
-        
-        if (integer is not null)
+        if (context.INTEGER_NUMBER() is {} integer)
         {
             return new NodeResult
             {
@@ -136,14 +156,33 @@ public partial class PolskiVisitor
                 Value = integer.GetText()
             };
         }
+        
+        if (context.BIG_INTEGER_NUMBER() is {} bigInteger)
+        {
+            var text = bigInteger.GetText();
+            return new NodeResult
+            {
+                PolskiMember = new PolskiMember(PolskiDataType.Int64),
+                Value = text.Remove(text.Length - 1)
+            };
+        }
 
-        var real = context.REAL_NUMBER();
-        if (real is not null)
+        if (context.REAL_NUMBER() is {} real)
         {
             return new NodeResult
             {
                 PolskiMember = new PolskiMember(PolskiDataType.Float),
                 Value = real.GetText()
+            };
+        }
+        
+        if (context.BIG_REAL_NUMBER() is {} bigReal)
+        {
+            var text = bigReal.GetText();
+            return new NodeResult
+            {
+                PolskiMember = new PolskiMember(PolskiDataType.Double),
+                Value = text.Remove(text.Length - 1)
             };
         }
 

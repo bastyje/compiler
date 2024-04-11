@@ -81,15 +81,45 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpression([NotNull] PolskiParser.ExpressionContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="PolskiParser.arithmeticExpression"/>.
+	/// Enter a parse tree produced by <see cref="PolskiParser.additiveExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterArithmeticExpression([NotNull] PolskiParser.ArithmeticExpressionContext context);
+	void EnterAdditiveExpression([NotNull] PolskiParser.AdditiveExpressionContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="PolskiParser.arithmeticExpression"/>.
+	/// Exit a parse tree produced by <see cref="PolskiParser.additiveExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitArithmeticExpression([NotNull] PolskiParser.ArithmeticExpressionContext context);
+	void ExitAdditiveExpression([NotNull] PolskiParser.AdditiveExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.multiplicativeExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMultiplicativeExpression([NotNull] PolskiParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.multiplicativeExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMultiplicativeExpression([NotNull] PolskiParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.unaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryExpression([NotNull] PolskiParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.unaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryExpression([NotNull] PolskiParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.primaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrimaryExpression([NotNull] PolskiParser.PrimaryExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.primaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrimaryExpression([NotNull] PolskiParser.PrimaryExpressionContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.number"/>.
 	/// </summary>

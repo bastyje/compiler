@@ -63,10 +63,23 @@ public class ScopeContext
         return member;
     }
     
+    public Member GetMember(string name)
+    {
+        return CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == name)
+               ?? CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name))
+               ?? throw new InvalidOperationException($"Variable {name} is not defined in this scope");
+    }
+    
     public bool TryGetMember(string name, out Member member)
     {
-        member = CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == name)
-                 ?? CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name));
+        try
+        {
+            member = GetMember(name);
+        }
+        catch (InvalidOperationException)
+        {
+            member = null;
+        }
         return member is not null;
     }
 

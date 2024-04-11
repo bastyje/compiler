@@ -62,11 +62,29 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpression([NotNull] PolskiParser.ExpressionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="PolskiParser.arithmeticExpression"/>.
+	/// Visit a parse tree produced by <see cref="PolskiParser.additiveExpression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitArithmeticExpression([NotNull] PolskiParser.ArithmeticExpressionContext context);
+	Result VisitAdditiveExpression([NotNull] PolskiParser.AdditiveExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.multiplicativeExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiplicativeExpression([NotNull] PolskiParser.MultiplicativeExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.unaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryExpression([NotNull] PolskiParser.UnaryExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.primaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrimaryExpression([NotNull] PolskiParser.PrimaryExpressionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.number"/>.
 	/// </summary>
