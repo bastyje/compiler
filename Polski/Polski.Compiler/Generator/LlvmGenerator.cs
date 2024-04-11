@@ -28,17 +28,6 @@ public static class LlvmGenerator
         return $"  store {llvmType} {value}, {llvmType}* %{name}\n";
     }
     
-    public static string InitializeStandardFunctions() => string.Join(
-        '\n',
-        AddI32,
-        AddFloat,
-        SubI32,
-        SubFloat,
-        MulI32,
-        MulFloat,
-        DivI32,
-        DivFloat);
-    
     #region Main
     
     public static string MainFunctionOpen() => "define i32 @main() nounwind {";
@@ -51,118 +40,167 @@ public static class LlvmGenerator
     #endregion
     
     #region Arithmetic
-
-    #region Calls
     
-    public static string CallAddI32(string resultIdentifier, Operand left, Operand right)
+    public static string CallAdd(Member resultMember, Operand left, Operand right) => LlvmDataType.MapFromPolski(resultMember.LlvmType) switch
     {
-        return $"  %{resultIdentifier} = call i32 @add_i32(i32 {left}, i32 {right})\n";
+        LlvmDataType.Int32 => AddInt32(resultMember.LlvmName, left, right),
+        LlvmDataType.Int64 => AddInt64(resultMember.LlvmName, left, right),
+        LlvmDataType.Float => AddFloat(resultMember.LlvmName, left, right),
+        LlvmDataType.Double => AddDouble(resultMember.LlvmName, left, right),
+        _ => throw new InvalidOperationException()
+    };
+    
+    public static string CallSub(Member resultMember, Operand left, Operand right) => LlvmDataType.MapFromPolski(resultMember.LlvmType) switch
+    {
+        LlvmDataType.Int32 => SubInt32(resultMember.LlvmName, left, right),
+        LlvmDataType.Int64 => SubInt64(resultMember.LlvmName, left, right),
+        LlvmDataType.Float => SubFloat(resultMember.LlvmName, left, right),
+        LlvmDataType.Double => SubDouble(resultMember.LlvmName, left, right),
+        _ => throw new InvalidOperationException()
+    };
+    
+    public static string CallMul(Member resultMember, Operand left, Operand right) => LlvmDataType.MapFromPolski(resultMember.LlvmType) switch
+    {
+        LlvmDataType.Int32 => MulInt32(resultMember.LlvmName, left, right),
+        LlvmDataType.Int64 => MulInt64(resultMember.LlvmName, left, right),
+        LlvmDataType.Float => MulFloat(resultMember.LlvmName, left, right),
+        LlvmDataType.Double => MulDouble(resultMember.LlvmName, left, right),
+        _ => throw new InvalidOperationException()
+    };
+    
+    public static string CallDiv(Member resultMember, Operand left, Operand right) => LlvmDataType.MapFromPolski(resultMember.LlvmType) switch
+    {
+        LlvmDataType.Int32 => DivInt32(resultMember.LlvmName, left, right),
+        LlvmDataType.Int64 => DivInt64(resultMember.LlvmName, left, right),
+        LlvmDataType.Float => DivFloat(resultMember.LlvmName, left, right),
+        LlvmDataType.Double => DivDouble(resultMember.LlvmName, left, right),
+        _ => throw new InvalidOperationException()
+    };
+    
+    private static string AddInt32(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = add i32 {left}, {right}\n";
     }
     
-    public static string CallAddFloat(string resultIdentifier, Operand left, Operand right)
+    private static string AddInt64(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call float @add_float(float {left}, float {right})\n";
+        return $"  %{resultIdentifier} = add i64 {left}, {right}\n";
     }
     
-    public static string CallSubI32(string resultIdentifier, Operand left, Operand right)
+    private static string AddFloat(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call i32 @sub_i32(i32 {left}, i32 {right})\n";
+        return $"  %{resultIdentifier} = fadd float {left}, {right}\n";
     }
     
-    public static string CallSubFloat(string resultIdentifier, Operand left, Operand right)
+    private static string AddDouble(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call float @sub_float(float {left}, float {right})\n";
+        return $"  %{resultIdentifier} = fadd double {left}, {right}\n";
     }
     
-    public static string CallMulI32(string resultIdentifier, Operand left, Operand right)
+    private static string SubInt32(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call i32 @mul_i32(i32 {left}, i32 {right})\n";
+        return $"  %{resultIdentifier} = sub i32 {left}, {right}\n";
     }
     
-    public static string CallMulFloat(string resultIdentifier, Operand left, Operand right)
+    private static string SubInt64(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call float @mul_float(float {left}, float {right})\n";
+        return $"  %{resultIdentifier} = sub i64 {left}, {right}\n";
     }
     
-    public static string CallDivI32(string resultIdentifier, Operand left, Operand right)
+    private static string SubFloat(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call i32 @div_i32(i32 {left}, i32 {right})\n";
+        return $"  %{resultIdentifier} = fsub float {left}, {right}\n";
     }
-
-    public static string CallDivFloat(string resultIdentifier, Operand left, Operand right)
+    
+    private static string SubDouble(string resultIdentifier, Operand left, Operand right)
     {
-        return $"  %{resultIdentifier} = call float @div_float(float {left}, float {right})\n";
+        return $"  %{resultIdentifier} = fsub double {left}, {right}\n";
     }
-
+    
+    private static string MulInt32(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = mul i32 {left}, {right}\n";
+    }
+    
+    private static string MulInt64(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = mul i64 {left}, {right}\n";
+    }
+    
+    private static string MulFloat(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = fmul float {left}, {right}\n";
+    }
+    
+    private static string MulDouble(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = fmul double {left}, {right}\n";
+    }
+    
+    private static string DivInt32(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = sdiv i32 {left}, {right}\n";
+    }
+    
+    private static string DivInt64(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = sdiv i64 {left}, {right}\n";
+    }
+    
+    private static string DivFloat(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = fdiv float {left}, {right}\n";
+    }
+    
+    private static string DivDouble(string resultIdentifier, Operand left, Operand right)
+    {
+        return $"  %{resultIdentifier} = fdiv double {left}, {right}\n";
+    }
+    
+    
     #endregion
-
-    #region Definitions
     
-    private const string AddI32 =
-        """
-        define i32 @add_i32(i32 %left, i32 %right) {
-          %ret = add i32 %left, %right
-          ret i32 %ret
-        }
-        """;
-
-    private const string AddFloat =
-        """
-        define float @add_float(float %left, float %right) {
-          %ret = fadd float %left, %right
-          ret float %ret
-        }
-        """;
-
-    private const string SubI32 =
-        """
-        define i32 @sub_i32(i32 %left, i32 %right) {
-          %ret = sub i32 %left, %right
-          ret i32 %ret
-        }
-        """;
-
-    private const string SubFloat =
-        """
-        define float @sub_float(float %left, float %right) {
-          %ret = fsub float %left, %right
-          ret float %ret
-        }
-        """;
-
-    private const string MulI32 =
-        """
-        define i32 @mul_i32(i32 %left, i32 %right) {
-          %ret = mul i32 %left, %right
-          ret i32 %ret
-        }
-        """;
-
-    private const string MulFloat =
-        """
-        define float @mul_float(float %left, float %right) {
-          %ret = fmul float %left, %right
-          ret float %ret
-        }
-        """;
-
-    private const string DivI32 =
-        """
-        define i32 @div_i32(i32 %left, i32 %right) {
-          %ret = sdiv i32 %left, %right
-          ret i32 %ret
-        }
-        """;
-
-    private const string DivFloat =
-        """
-        define float @div_float(float %left, float %right) {
-          %ret = fdiv float %left, %right
-          ret float %ret
-        }
-        """;
-    
+    #region define
+    public static string DefinePrint() => "declare i32 @printf(i8*, ...)";
+    public static string DefineScanf() => "declare i32 @scanf(i8*, ...)";
     #endregion
     
+    #region inputoutput
+
+    public static string PrintLiteral(string strValue, ref int strCounter)
+    {
+        var strLabel = $"@.str{strCounter++}";
+        var llvmCode = $"{strLabel} = private unnamed_addr constant [{strValue.Length + 1} x i8] c\"{strValue}\\00\", align 1\n";
+        llvmCode += $"call i32 (i8*, ...) @printf(i8* getelementptr ([{strValue.Length + 1} x i8], [{strValue.Length + 1} x i8]* {strLabel}, i32 0, i32 0))\n";
+        return llvmCode;
+    }
+
+    public static string PrintfVariable(string resultName, string variableType, ref int strCounter)
+    {
+        var formatSpecifier = GetFormatSpecifier(variableType);
+        var formatStrLabel = $"@.str{strCounter++}";
+        var llvmCode = $"{formatStrLabel} = private unnamed_addr constant [4 x i8] c\"{formatSpecifier}\\00\", align 1\n";
+        llvmCode += $"call i32 (i8*, ...) @printf(i8* getelementptr ([4 x i8], [4 x i8]* {formatStrLabel}, i32 0, i32 0), {variableType} %{resultName})\n";
+        return llvmCode;
+    }
+
+    public static string ScanfVariable(string variableName, string variableType, ref int strCounter)
+    {
+        var formatSpecifier = GetFormatSpecifier(variableType);
+        var formatStrLabel = $"@.str{strCounter++}";
+        var llvmCode = $"{formatStrLabel} = private unnamed_addr constant [3 x i8] c\"{formatSpecifier}\\00\", align 1\n";
+        llvmCode += $"call i32 (i8*, ...) @scanf(i8* getelementptr ([3 x i8], [3 x i8]* {formatStrLabel}, i32 0, i32 0), {variableType}* %{variableName})\n";
+        return llvmCode;
+    }
+
+    private static string GetFormatSpecifier(string llvmType)
+    {
+        switch (llvmType)
+        {
+            case "i32": return "%d";
+            case "float": return "%f";
+            default: throw new NotImplementedException($"No scanf or printf format specifier for LLVM type: {llvmType}");
+        }
+    }
     #endregion
 }

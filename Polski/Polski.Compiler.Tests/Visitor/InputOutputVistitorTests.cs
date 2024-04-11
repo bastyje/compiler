@@ -19,11 +19,11 @@ public class InputOutputVisitorTests
         
         var result = visitor.VisitPrintStatement(context);
         
-        var expectedLlvmIr = @"
+        var expectedLlvmIr = """
 declare i32 @printf(i8*, ...)
 @.str0 = private unnamed_addr constant [14 x i8] c""Hello, World!\00"", align 1
 call i32 (i8*, ...) @printf(i8* getelementptr ([14 x i8], [14 x i8]* @.str0, i32 0, i32 0))
-".Trim();
+""".Trim();
         Assert.Equal(expectedLlvmIr, result.Code.Trim());
     }
 

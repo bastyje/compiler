@@ -8,8 +8,9 @@ app.AddCommand(([Option('o')] string? output) =>
 {
     const string code =
         """
-        int j = 3;
-        int i = j + 4 / 2 * 5;
+        bigint j;
+        j = 4294967296b;
+        bigint i = 1b + j;
         """;
     
     var compiled = Compiler.Compile(code);

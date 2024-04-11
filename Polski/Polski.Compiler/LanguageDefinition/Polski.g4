@@ -24,44 +24,46 @@ printStatement
 readStatement
     : READ '(' IDENTIFIER ')'
     ;
-   
+    
 assignment
     : IDENTIFIER ASSIGN expression;
     
 expression
-    : arithmeticExpression
-//    | additiveExpression
+//    : arithmeticExpression
+    : additiveExpression
     ;
     
-//additiveExpression
-//    : multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
-//    ;
-//    
-//multiplicativeExpression
-//    : unaryExpression ((MULTIPLY | DIVIDE) unaryExpression)*
-//    ;
-//    
-//unaryExpression
-//    : primaryExpression
-//    ;
-//    
-//primaryExpression
-//    : IDENTIFIER
-//    | number
-//    ;
-    
-arithmeticExpression
-    : arithmeticExpression MULTIPLY arithmeticExpression
-    | arithmeticExpression DIVIDE arithmeticExpression
-    | arithmeticExpression PLUS arithmeticExpression
-    | arithmeticExpression MINUS arithmeticExpression
-    | IDENTIFIER
+additiveExpression
+    : multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
+    ;
+
+multiplicativeExpression
+    : unaryExpression ((MULTIPLY | DIVIDE) unaryExpression)*
+    ;
+
+unaryExpression
+    : primaryExpression
+    ;
+
+primaryExpression
+    : IDENTIFIER
     | number
     ;
+    
+//arithmeticExpression
+//    : arithmeticExpression MULTIPLY arithmeticExpression
+//    | arithmeticExpression DIVIDE arithmeticExpression
+//    | arithmeticExpression PLUS arithmeticExpression
+//    | arithmeticExpression MINUS arithmeticExpression
+//    | IDENTIFIER
+//    | number
+//    ;
 
 number
     : INTEGER_NUMBER
+    | BIG_INTEGER_NUMBER
     | REAL_NUMBER
+    | BIG_REAL_NUMBER
     ;
     
 declaration
@@ -78,7 +80,9 @@ type
 
 numericType
     : INT | INT64 | FLOAT | DOUBLE
-    ;    
+    ;
+    
+
 
 PRINT: 'print';
 READ: 'read';
@@ -108,8 +112,10 @@ PLUS: '+';
 
 WHITESPACE: [ \t\r\n]+ -> skip;
 
+BIG_REAL_NUMBER: [1-9][0-9]* '.' [0-9]+ 'b';
+REAL_NUMBER: [1-9][0-9]*'.'[0-9]+;
+BIG_INTEGER_NUMBER: [1-9][0-9]* 'b';
 INTEGER_NUMBER: [1-9][0-9]*;
-REAL_NUMBER: [1-9][0-9]*'.'[0-9]+; 
 QUOTED_STRING : '"' ( '\\' '"' | ~('"' | '\\') )* '"';
 
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9]*;
