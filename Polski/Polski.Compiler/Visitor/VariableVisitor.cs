@@ -5,7 +5,7 @@ namespace Polski.Compiler.Visitor;
 
 public partial class PolskiVisitor
 {
-    private readonly ScopeContext _scopeContext;
+    private readonly ScopeContext _scopeContext = scopeContext;
     
     public override NodeResult VisitDeclaration(PolskiParser.DeclarationContext context)
     {

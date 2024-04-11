@@ -99,9 +99,9 @@ PLUS: '+';
 
 WHITESPACE: [ \t\r\n]+ -> skip;
 
-BIG_REAL_NUMBER: [1-9][0-9]* '.' [0-9]+ 'b';
-REAL_NUMBER: [1-9][0-9]*'.'[0-9]+;
-BIG_INTEGER_NUMBER: [1-9][0-9]* 'b';
-INTEGER_NUMBER: [1-9][0-9]*;
+BIG_REAL_NUMBER: ('0' | [1-9][0-9]*) '.' [0-9]+ 'b';
+REAL_NUMBER: ('0' | [1-9][0-9]*) '.' [0-9]+;
+BIG_INTEGER_NUMBER: ('0' | [1-9][0-9]*) 'b';
+INTEGER_NUMBER: '0' | [1-9][0-9]*;
 
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9]*;
