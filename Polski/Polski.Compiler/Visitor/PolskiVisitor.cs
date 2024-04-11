@@ -7,13 +7,8 @@ namespace Polski.Compiler.Visitor;
 /// <summary>
 /// This partial class covers todo
 /// </summary>
-public partial class PolskiVisitor : PolskiBaseVisitor<NodeResult>
+public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisitor<NodeResult>
 {
-    public PolskiVisitor(ScopeContext scopeContext)
-    {
-        _scopeContext = scopeContext;
-    }
-    
     public override NodeResult VisitProgram(PolskiParser.ProgramContext context)
     {
         _scopeContext.PushScope();
