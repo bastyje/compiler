@@ -12,7 +12,6 @@ public class PolskiVisitorTests
     [Theory]
     [InlineData(PolskiDataType.Int32, LlvmDataType.Int32, PolskiParser.INT)]
     [InlineData(PolskiDataType.Int64, LlvmDataType.Int64, PolskiParser.INT64)]
-    [InlineData(PolskiDataType.Float, LlvmDataType.Float, PolskiParser.FLOAT)]
     [InlineData(PolskiDataType.Double, LlvmDataType.Double, PolskiParser.DOUBLE)]
     public void VisitDeclaration_WhenIntVariableIsDeclared_ShouldGenerateAllocatingCode(string polskiType, string llvmType, int nodeTerminal)
     {

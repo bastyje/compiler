@@ -9,12 +9,12 @@ public partial class PolskiVisitor
     {
         var expression = Visit(context.expression());
         var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
-        var printfVar = _scopeContext.AddMember(expression.PolskiMember.Type);
         
-        _scopeContext.AddAnonymousMember();
         
         if (expressionResult.StackAllocated)
         {
+            var printfVar = _scopeContext.AddMember(expression.PolskiMember.Type);
+            _scopeContext.AddAnonymousMember();
             return new NodeResult
             {
                 Code = new StringBuilder()
@@ -25,6 +25,7 @@ public partial class PolskiVisitor
             };
         }
         
+        _scopeContext.AddAnonymousMember();
         return new NodeResult
         {
             Code = new StringBuilder()

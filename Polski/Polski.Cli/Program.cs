@@ -24,8 +24,11 @@ app.AddCommand((
         {
             const string code =
                 """
-                abc = 1;  233
-                float j = i + 1;
+                double a = 1312.12;
+                print a / 123.66;
+                double b = 1.0 + a;
+                read b;
+                print b;
                 """;
 
             var compiled = Compiler.Compile(code);
