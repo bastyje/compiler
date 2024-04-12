@@ -56,7 +56,7 @@ public class PolskiVisitorTests
         var scopeContext = new ScopeContext();
         scopeContext.PushScope();
         
-        scopeContext.AddMember(new PolskiMember("a", PolskiDataType.Int32), true);
+        scopeContext.AddMember(new PolskiMember("a", PolskiDataType.Int32), numericTypeContext, true);
         
         var visitor = new PolskiVisitor(scopeContext);
 

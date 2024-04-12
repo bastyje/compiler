@@ -1,5 +1,7 @@
 using System.Text;
+using Antlr4.Runtime;
 using Polski.Compiler.Common;
+using Polski.Compiler.Error;
 using Polski.Compiler.Generator;
 
 namespace Polski.Compiler.Visitor;
@@ -11,6 +13,7 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
 {
     public override NodeResult VisitProgram(PolskiParser.ProgramContext context)
     {
+        
         _scopeContext.PushScope();
         return new StringBuilder()
             .AppendLine(LlvmGenerator.Header())

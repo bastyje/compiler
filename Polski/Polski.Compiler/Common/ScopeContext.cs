@@ -1,3 +1,5 @@
+using Antlr4.Runtime;
+using Polski.Compiler.Error;
 using Polski.Compiler.LanguageDefinition;
 
 namespace Polski.Compiler.Common;
@@ -10,7 +12,7 @@ public class ScopeContext
         {
             if (_stack.Count == 0)
             {
-                throw new InvalidOperationException("There is no defined scope");
+                throw new SemanticErrorInternalException("There is no defined scope");
             }
             
             return _stack.Peek();
@@ -31,26 +33,26 @@ public class ScopeContext
         _stack.Push(new HashSet<Member>());
     }
     
-    public void PopScope()
+    public void PopScope(ParserRuleContext context)
     {
         if (_stack.Count == 0)
         {
-            throw new InvalidOperationException("There is no defined scope");
+            throw new SemanticErrorException("There is no defined scope", context);
         }
         
         _stack.Pop();
     }
     
-    public Member AddMember(PolskiMember polskiMember, bool stackAllocated = false)
+    public Member AddMember(PolskiMember polskiMember, ParserRuleContext context, bool stackAllocated = false)
     {
         if (_stack.Count == 0)
         {
-            throw new InvalidOperationException("There is no defined scope");
+            throw new SemanticErrorException("There is no defined scope", context);
         }
         
         if (CurrentScopeMembers.Any(m => m.PolskiMember.Name == polskiMember.Name))
         {
-            throw new InvalidOperationException($"Variable {polskiMember.Name} is already defined in this scope");
+            throw new SemanticErrorException($"Variable {polskiMember.Name} is already defined in this scope", context);
         }
         
         var member = GenerateMember(polskiMember, stackAllocated);
@@ -65,18 +67,18 @@ public class ScopeContext
         return member;
     }
     
-    public Member GetMember(string name)
+    public Member GetMember(string name, ParserRuleContext context)
     {
         return CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == name)
                ?? CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name))
-               ?? throw new InvalidOperationException($"Variable {name} is not defined in this scope");
+               ?? throw new SemanticErrorException($"Variable {name} is not defined in this scope", context);
     }
     
-    public bool TryGetMember(string name, out Member member)
+    public bool TryGetMember(string name, ParserRuleContext context, out Member member)
     {
         try
         {
-            member = GetMember(name);
+            member = GetMember(name, context);
         }
         catch (InvalidOperationException)
         {

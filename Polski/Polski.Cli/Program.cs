@@ -1,6 +1,7 @@
 ﻿using Cocona;
 using Polski.Cli;
 using Polski.Compiler;
+using Polski.Compiler.Error;
 
 var builder = CoconaApp.CreateBuilder();
 var app = builder.Build();
@@ -19,20 +20,27 @@ app.AddCommand((
 {
     if (dev)
     {
-        const string code =
-            """
-            float j = 2.0;
-            read j;
-            print j;
-            """;
+        try
+        {
+            const string code =
+                """
+                abc = 1;  233
+                float j = i + 1;
+                """;
 
-        var compiled = Compiler.Compile(code);
-        Console.WriteLine(compiled);
-        File.WriteAllText(output, compiled);
+            var compiled = Compiler.Compile(code);
+            Console.WriteLine(compiled);
+            File.WriteAllText(output, compiled);
+        }
+        catch (CompilationErrorException) {}
     }
     else
     {
-        Run(input, output, llvm, noOptimize);
+        try
+        {
+            Run(input, output, llvm, noOptimize);
+        }
+        catch (CompilationErrorException) {}
     }
 });
 
@@ -76,14 +84,14 @@ static void Run(string input, string? output, bool llvm, bool noOptimize)
         if (Environment.OSVersion.Platform == PlatformID.Unix)
         {
             File.SetUnixFileMode(output, UnixFileMode.GroupExecute
-                                         | UnixFileMode.GroupRead
-                                         | UnixFileMode.GroupWrite
-                                         | UnixFileMode.OtherExecute
-                                         | UnixFileMode.OtherRead
-                                         | UnixFileMode.OtherWrite
-                                         | UnixFileMode.UserExecute
-                                         | UnixFileMode.UserRead
-                                         | UnixFileMode.UserWrite);
+                | UnixFileMode.GroupRead
+                | UnixFileMode.GroupWrite
+                | UnixFileMode.OtherExecute
+                | UnixFileMode.OtherRead
+                | UnixFileMode.OtherWrite
+                | UnixFileMode.UserExecute
+                | UnixFileMode.UserRead
+                | UnixFileMode.UserWrite);
         }
     }
     
