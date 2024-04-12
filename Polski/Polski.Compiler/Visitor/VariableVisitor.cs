@@ -1,4 +1,5 @@
 using Polski.Compiler.Common;
+using Polski.Compiler.Error;
 using Polski.Compiler.Generator;
 
 namespace Polski.Compiler.Visitor;
@@ -12,7 +13,7 @@ public partial class PolskiVisitor
         var identifier = context.IDENTIFIER().GetText();
         var type = Visit(context.type());
 
-        var member = _scopeContext.AddMember(new PolskiMember(identifier, type.PolskiMember.Type), true);
+        var member = _scopeContext.AddMember(new PolskiMember(identifier, type.PolskiMember.Type), context, true);
         
         return new NodeResult
         {
@@ -29,18 +30,18 @@ public partial class PolskiVisitor
         if (declarationStatement.PolskiMember.Type != expression.PolskiMember.Type)
         {
             // todo exception
-            throw new InvalidOperationException(
-                $"Cannot assign not matching types: {declarationStatement.PolskiMember.Type} " +
-                $"and {expression.PolskiMember.Type}");
+            throw new SemanticErrorException(
+                $"Cannot assign not matching types: {declarationStatement.PolskiMember.Type} and {expression.PolskiMember.Type}",
+                context);
         }
 
-        _scopeContext.TryGetMember(declarationStatement.PolskiMember.Name, out var declarationMember);
+        var declarationMember = _scopeContext.GetMember(declarationStatement.PolskiMember.Name, context);
 
         string valueAssignment;
         switch (expression.ResultKind)
         {
             case ResultKind.Variable:
-                _scopeContext.TryGetMember(expression.PolskiMember.Name, out var expressionMember);
+                var expressionMember = _scopeContext.GetMember(expression.PolskiMember.Name, context);
                 valueAssignment = LlvmGenerator.StoreValue(
                     declarationMember.LlvmName,
                     declarationStatement.PolskiMember.Type,

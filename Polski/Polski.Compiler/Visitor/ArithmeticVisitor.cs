@@ -1,5 +1,7 @@
 using System.Text;
+using Antlr4.Runtime;
 using Polski.Compiler.Common;
+using Polski.Compiler.Error;
 using Polski.Compiler.Generator;
 using Polski.Compiler.LanguageDefinition;
 
@@ -27,16 +29,16 @@ public partial class PolskiVisitor
 
             if (previousResult.PolskiMember.Type != right.PolskiMember.Type)
             {
-                throw new InvalidOperationException(
-                    $"Cannot add not matching types: {previousResult.PolskiMember.Type} " +
-                    $"and {right.PolskiMember.Type}");
+                throw new SemanticErrorException(
+                    $"Cannot add not matching types: {previousResult.PolskiMember.Type} and {right.PolskiMember.Type}",
+                    context);
             }
             
             sb.Append(previousResult.Code);
             sb.Append(right.Code);
 
-            var leftOperand = PrepareForOperation(previousResult, sb);
-            var rightOperand = PrepareForOperation(right, sb);
+            var leftOperand = PrepareForOperation(previousResult, sb, context);
+            var rightOperand = PrepareForOperation(right, sb, context);
             var resultMember = _scopeContext.AddMember(previousResult.PolskiMember.Type);
 
             if (context.PLUS() is not null)
@@ -82,16 +84,16 @@ public partial class PolskiVisitor
             
             if (previousResult.PolskiMember.Type != right.PolskiMember.Type)
             {
-                throw new InvalidOperationException(
-                    $"Cannot multiply not matching types: {previousResult.PolskiMember.Type} " +
-                    $"and {right.PolskiMember.Type}");
+                throw new SemanticErrorException(
+                    $"Cannot multiply not matching types: {previousResult.PolskiMember.Type} and {right.PolskiMember.Type}",
+                    context);
             }
 
             sb.Append(previousResult.Code);
             sb.Append(right.Code);
 
-            var leftOperand = PrepareForOperation(previousResult, sb);
-            var rightOperand = PrepareForOperation(right, sb);
+            var leftOperand = PrepareForOperation(previousResult, sb, context);
+            var rightOperand = PrepareForOperation(right, sb, context);
             var resultMember = _scopeContext.AddMember(previousResult.PolskiMember.Type);
             
             if (context.GetToken(PolskiParser.MULTIPLY, i) is not null)
@@ -129,7 +131,7 @@ public partial class PolskiVisitor
     {
         if (context.IDENTIFIER() is { } identifier)
         {
-            _scopeContext.TryGetMember(identifier.GetText(), out var identifierMember);
+            var identifierMember = _scopeContext.GetMember(identifier.GetText(), context);
         
             return new NodeResult
             {
@@ -189,13 +191,13 @@ public partial class PolskiVisitor
         throw new InvalidOperationException();
     }
 
-    private Operand PrepareForOperation(NodeResult nodeResult, StringBuilder stringBuilder)
+    private Operand PrepareForOperation(NodeResult nodeResult, StringBuilder stringBuilder, ParserRuleContext context)
     {
         Operand operand;
         switch (nodeResult.ResultKind)
         {
             case ResultKind.Variable:
-                _scopeContext.TryGetMember(nodeResult.PolskiMember.Name, out var leftMember);
+                var leftMember = _scopeContext.GetMember(nodeResult.PolskiMember.Name, context);
                 if (leftMember.StackAllocated)
                 { 
                     var newMember = _scopeContext.AddMember(nodeResult.PolskiMember.Type);

@@ -8,7 +8,7 @@ public partial class PolskiVisitor
     public override NodeResult VisitPrint(PolskiParser.PrintContext context)
     {
         var expression = Visit(context.expression());
-        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name);
+        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
         var printfVar = _scopeContext.AddMember(expression.PolskiMember.Type);
         
         _scopeContext.AddAnonymousMember();
@@ -37,7 +37,7 @@ public partial class PolskiVisitor
     public override NodeResult VisitRead(PolskiParser.ReadContext context)
     {
         var identifier = context.IDENTIFIER().GetText();
-        var member = _scopeContext.GetMember(identifier);
+        var member = _scopeContext.GetMember(identifier, context);
         
         _scopeContext.AddAnonymousMember();
         
