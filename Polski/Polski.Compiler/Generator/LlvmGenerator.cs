@@ -43,11 +43,9 @@ public static class LlvmGenerator
         .AppendLine(DeclareScanf())
         .AppendLine(DeclarePrintI32Format())
         .AppendLine(DeclarePrintI64Format())
-        .AppendLine(DeclarePrintFloatFormat())
         .AppendLine(DeclarePrintDoubleFormat())
         .AppendLine(DeclareScanI32Format())
         .AppendLine(DeclareScanI64Format())
-        .AppendLine(DeclareScanFloatFormat())
         .AppendLine(DeclareScanDoubleFormat())
         .ToString();
     
@@ -59,7 +57,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => AddInt32(resultMember.LlvmName, left, right),
         LlvmDataType.Int64 => AddInt64(resultMember.LlvmName, left, right),
-        LlvmDataType.Float => AddFloat(resultMember.LlvmName, left, right),
         LlvmDataType.Double => AddDouble(resultMember.LlvmName, left, right),
         _ => throw new InvalidOperationException()
     };
@@ -68,7 +65,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => SubInt32(resultMember.LlvmName, left, right),
         LlvmDataType.Int64 => SubInt64(resultMember.LlvmName, left, right),
-        LlvmDataType.Float => SubFloat(resultMember.LlvmName, left, right),
         LlvmDataType.Double => SubDouble(resultMember.LlvmName, left, right),
         _ => throw new InvalidOperationException()
     };
@@ -77,7 +73,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => MulInt32(resultMember.LlvmName, left, right),
         LlvmDataType.Int64 => MulInt64(resultMember.LlvmName, left, right),
-        LlvmDataType.Float => MulFloat(resultMember.LlvmName, left, right),
         LlvmDataType.Double => MulDouble(resultMember.LlvmName, left, right),
         _ => throw new InvalidOperationException()
     };
@@ -86,7 +81,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => DivInt32(resultMember.LlvmName, left, right),
         LlvmDataType.Int64 => DivInt64(resultMember.LlvmName, left, right),
-        LlvmDataType.Float => DivFloat(resultMember.LlvmName, left, right),
         LlvmDataType.Double => DivDouble(resultMember.LlvmName, left, right),
         _ => throw new InvalidOperationException()
     };
@@ -99,11 +93,6 @@ public static class LlvmGenerator
     private static string AddInt64(string resultIdentifier, Operand left, Operand right)
     {
         return $"  %{resultIdentifier} = add i64 {left}, {right}\n";
-    }
-    
-    private static string AddFloat(string resultIdentifier, Operand left, Operand right)
-    {
-        return $"  %{resultIdentifier} = fadd float {left}, {right}\n";
     }
     
     private static string AddDouble(string resultIdentifier, Operand left, Operand right)
@@ -121,11 +110,6 @@ public static class LlvmGenerator
         return $"  %{resultIdentifier} = sub i64 {left}, {right}\n";
     }
     
-    private static string SubFloat(string resultIdentifier, Operand left, Operand right)
-    {
-        return $"  %{resultIdentifier} = fsub float {left}, {right}\n";
-    }
-    
     private static string SubDouble(string resultIdentifier, Operand left, Operand right)
     {
         return $"  %{resultIdentifier} = fsub double {left}, {right}\n";
@@ -139,11 +123,6 @@ public static class LlvmGenerator
     private static string MulInt64(string resultIdentifier, Operand left, Operand right)
     {
         return $"  %{resultIdentifier} = mul i64 {left}, {right}\n";
-    }
-    
-    private static string MulFloat(string resultIdentifier, Operand left, Operand right)
-    {
-        return $"  %{resultIdentifier} = fmul float {left}, {right}\n";
     }
     
     private static string MulDouble(string resultIdentifier, Operand left, Operand right)
@@ -161,11 +140,6 @@ public static class LlvmGenerator
         return $"  %{resultIdentifier} = sdiv i64 {left}, {right}\n";
     }
     
-    private static string DivFloat(string resultIdentifier, Operand left, Operand right)
-    {
-        return $"  %{resultIdentifier} = fdiv float {left}, {right}\n";
-    }
-    
     private static string DivDouble(string resultIdentifier, Operand left, Operand right)
     {
         return $"  %{resultIdentifier} = fdiv double {left}, {right}\n";
@@ -181,7 +155,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => PrintInt32(member),
         LlvmDataType.Int64 => PrintInt64(member),
-        LlvmDataType.Float => PrintFloat(member),
         LlvmDataType.Double => PrintDouble(member),
         _ => throw new InvalidOperationException()
     };
@@ -194,11 +167,6 @@ public static class LlvmGenerator
     private static string PrintInt64(Member member)
     {
         return $"  call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.printf.i64, i32 0, i32 0), i64 %{member.LlvmName})\n";
-    }
-    
-    private static string PrintFloat(Member member)
-    {
-        return $"  call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.printf.float, i32 0, i32 0), float %{member.LlvmName})\n";
     }
     
     private static string PrintDouble(Member member)
@@ -219,7 +187,6 @@ public static class LlvmGenerator
     {
         LlvmDataType.Int32 => ScanInt32(member),
         LlvmDataType.Int64 => ScanInt64(member),
-        LlvmDataType.Float => ScanFloat(member),
         LlvmDataType.Double => ScanDouble(member),
         _ => throw new InvalidOperationException()
     };
@@ -232,11 +199,6 @@ public static class LlvmGenerator
     private static string ScanInt64(Member member)
     {
         return $"  call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.scanf.i64, i32 0, i32 0), i64* %{member.LlvmName})\n";
-    }
-    
-    private static string ScanFloat(Member member)
-    {
-        return $"  call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.scanf.float, i32 0, i32 0), float* %{member.LlvmName})\n";
     }
     
     private static string ScanDouble(Member member)
@@ -263,11 +225,6 @@ public static class LlvmGenerator
           @.str.printf.i64 = private unnamed_addr constant [6 x i8] c"%lld\0A\00", align 1
         """;
     
-    private static string DeclarePrintFloatFormat() =>
-        """
-          @.str.printf.float = private unnamed_addr constant [4 x i8] c"%f\0A\00", align 1
-        """;
-    
     private static string DeclarePrintDoubleFormat() =>
         """
           @.str.printf.double = private unnamed_addr constant [5 x i8] c"%lf\0A\00", align 1
@@ -281,11 +238,6 @@ public static class LlvmGenerator
     private static string DeclareScanI64Format() =>
         """
           @.str.scanf.i64 = private unnamed_addr constant [5 x i8] c"%lld\00", align 1
-        """;
-    
-    private static string DeclareScanFloatFormat() =>
-        """
-          @.str.scanf.float = private unnamed_addr constant [3 x i8] c"%f\00", align 1
         """;
     
     private static string DeclareScanDoubleFormat() =>

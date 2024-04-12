@@ -53,7 +53,6 @@ number
     : INTEGER_NUMBER
     | BIG_INTEGER_NUMBER
     | REAL_NUMBER
-    | BIG_REAL_NUMBER
     ;
     
 declaration
@@ -69,7 +68,7 @@ type
     ;
 
 numericType
-    : INT | INT64 | FLOAT | DOUBLE
+    : INT | INT64 | DOUBLE
     ;
     
 
@@ -77,7 +76,6 @@ numericType
 SEMICOLON: ';';
 INT: 'int';
 INT64: 'bigint';
-FLOAT: 'float';
 DOUBLE: 'double';
 
 AND: '&&';

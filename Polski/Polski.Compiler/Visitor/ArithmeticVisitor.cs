@@ -145,7 +145,7 @@ public partial class PolskiVisitor
             return Visit(number);
         }
         
-        throw new InvalidOperationException();
+        throw new SemanticErrorException("Not recognized token", context);
     }
     
     public override NodeResult VisitNumber(PolskiParser.NumberContext context)
@@ -173,18 +173,8 @@ public partial class PolskiVisitor
         {
             return new NodeResult
             {
-                PolskiMember = new PolskiMember(PolskiDataType.Float),
-                Value = real.GetText()
-            };
-        }
-        
-        if (context.BIG_REAL_NUMBER() is {} bigReal)
-        {
-            var text = bigReal.GetText();
-            return new NodeResult
-            {
                 PolskiMember = new PolskiMember(PolskiDataType.Double),
-                Value = text.Remove(text.Length - 1)
+                Value = real.GetText()
             };
         }
 

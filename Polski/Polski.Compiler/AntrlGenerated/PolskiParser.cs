@@ -36,11 +36,11 @@ public partial class PolskiParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, SEMICOLON=3, INT=4, INT64=5, FLOAT=6, DOUBLE=7, AND=8, 
-		EQUALS=9, GREATER_OR_EQUALS=10, GREATER=11, LESS_OR_EQUALS=12, LESS=13, 
-		NOT=14, NOT_EQUALS=15, OR=16, XOR=17, ASSIGN=18, DIVIDE=19, MINUS=20, 
-		MULTIPLY=21, PLUS=22, WHITESPACE=23, BIG_REAL_NUMBER=24, REAL_NUMBER=25, 
-		BIG_INTEGER_NUMBER=26, INTEGER_NUMBER=27, IDENTIFIER=28;
+		T__0=1, T__1=2, SEMICOLON=3, INT=4, INT64=5, DOUBLE=6, AND=7, EQUALS=8, 
+		GREATER_OR_EQUALS=9, GREATER=10, LESS_OR_EQUALS=11, LESS=12, NOT=13, NOT_EQUALS=14, 
+		OR=15, XOR=16, ASSIGN=17, DIVIDE=18, MINUS=19, MULTIPLY=20, PLUS=21, WHITESPACE=22, 
+		BIG_REAL_NUMBER=23, REAL_NUMBER=24, BIG_INTEGER_NUMBER=25, INTEGER_NUMBER=26, 
+		IDENTIFIER=27;
 	public const int
 		RULE_program = 0, RULE_line = 1, RULE_statement = 2, RULE_print = 3, RULE_read = 4, 
 		RULE_assignment = 5, RULE_expression = 6, RULE_additiveExpression = 7, 
@@ -54,16 +54,16 @@ public partial class PolskiParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'print'", "'read'", "';'", "'int'", "'bigint'", "'float'", "'double'", 
-		"'&&'", "'=='", "'>='", "'>'", "'<='", "'<'", "'!'", "'!='", "'||'", "'^'", 
-		"'='", "'/'", "'-'", "'*'", "'+'"
+		null, "'print'", "'read'", "';'", "'int'", "'bigint'", "'double'", "'&&'", 
+		"'=='", "'>='", "'>'", "'<='", "'<'", "'!'", "'!='", "'||'", "'^'", "'='", 
+		"'/'", "'-'", "'*'", "'+'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, "SEMICOLON", "INT", "INT64", "FLOAT", "DOUBLE", "AND", 
-		"EQUALS", "GREATER_OR_EQUALS", "GREATER", "LESS_OR_EQUALS", "LESS", "NOT", 
-		"NOT_EQUALS", "OR", "XOR", "ASSIGN", "DIVIDE", "MINUS", "MULTIPLY", "PLUS", 
-		"WHITESPACE", "BIG_REAL_NUMBER", "REAL_NUMBER", "BIG_INTEGER_NUMBER", 
-		"INTEGER_NUMBER", "IDENTIFIER"
+		null, null, null, "SEMICOLON", "INT", "INT64", "DOUBLE", "AND", "EQUALS", 
+		"GREATER_OR_EQUALS", "GREATER", "LESS_OR_EQUALS", "LESS", "NOT", "NOT_EQUALS", 
+		"OR", "XOR", "ASSIGN", "DIVIDE", "MINUS", "MULTIPLY", "PLUS", "WHITESPACE", 
+		"BIG_REAL_NUMBER", "REAL_NUMBER", "BIG_INTEGER_NUMBER", "INTEGER_NUMBER", 
+		"IDENTIFIER"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -148,7 +148,7 @@ public partial class PolskiParser : Parser {
 				State = 35;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 520093942L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 251658358L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -783,7 +783,6 @@ public partial class PolskiParser : Parser {
 				Match(IDENTIFIER);
 				}
 				break;
-			case BIG_REAL_NUMBER:
 			case REAL_NUMBER:
 			case BIG_INTEGER_NUMBER:
 			case INTEGER_NUMBER:
@@ -812,7 +811,6 @@ public partial class PolskiParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INTEGER_NUMBER() { return GetToken(PolskiParser.INTEGER_NUMBER, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BIG_INTEGER_NUMBER() { return GetToken(PolskiParser.BIG_INTEGER_NUMBER, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode REAL_NUMBER() { return GetToken(PolskiParser.REAL_NUMBER, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BIG_REAL_NUMBER() { return GetToken(PolskiParser.BIG_REAL_NUMBER, 0); }
 		public NumberContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -846,7 +844,7 @@ public partial class PolskiParser : Parser {
 			{
 			State = 82;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 251658240L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 117440512L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -1027,7 +1025,6 @@ public partial class PolskiParser : Parser {
 	public partial class NumericTypeContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(PolskiParser.INT, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT64() { return GetToken(PolskiParser.INT64, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FLOAT() { return GetToken(PolskiParser.FLOAT, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOUBLE() { return GetToken(PolskiParser.DOUBLE, 0); }
 		public NumericTypeContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1062,7 +1059,7 @@ public partial class PolskiParser : Parser {
 			{
 			State = 93;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 240L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 112L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -1083,14 +1080,14 @@ public partial class PolskiParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,28,96,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,27,96,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,1,0,4,0,34,8,0,11,0,12,0,35,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,
 		1,2,3,2,47,8,2,1,3,1,3,1,3,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,6,1,6,1,7,1,7,
 		1,7,5,7,64,8,7,10,7,12,7,67,9,7,1,8,1,8,1,8,5,8,72,8,8,10,8,12,8,75,9,
 		8,1,9,1,9,1,10,1,10,3,10,81,8,10,1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,
 		13,1,13,1,14,1,14,1,15,1,15,1,15,0,0,16,0,2,4,6,8,10,12,14,16,18,20,22,
-		24,26,28,30,0,4,2,0,20,20,22,22,2,0,19,19,21,21,1,0,24,27,1,0,4,7,88,0,
+		24,26,28,30,0,4,2,0,19,19,21,21,2,0,18,18,20,20,1,0,24,26,1,0,4,6,88,0,
 		33,1,0,0,0,2,37,1,0,0,0,4,46,1,0,0,0,6,48,1,0,0,0,8,51,1,0,0,0,10,54,1,
 		0,0,0,12,58,1,0,0,0,14,60,1,0,0,0,16,68,1,0,0,0,18,76,1,0,0,0,20,80,1,
 		0,0,0,22,82,1,0,0,0,24,84,1,0,0,0,26,87,1,0,0,0,28,91,1,0,0,0,30,93,1,
@@ -1099,15 +1096,15 @@ public partial class PolskiParser : Parser {
 		12,0,41,47,3,26,13,0,42,47,3,10,5,0,43,47,3,12,6,0,44,47,3,6,3,0,45,47,
 		3,8,4,0,46,40,1,0,0,0,46,41,1,0,0,0,46,42,1,0,0,0,46,43,1,0,0,0,46,44,
 		1,0,0,0,46,45,1,0,0,0,47,5,1,0,0,0,48,49,5,1,0,0,49,50,3,12,6,0,50,7,1,
-		0,0,0,51,52,5,2,0,0,52,53,5,28,0,0,53,9,1,0,0,0,54,55,5,28,0,0,55,56,5,
-		18,0,0,56,57,3,12,6,0,57,11,1,0,0,0,58,59,3,14,7,0,59,13,1,0,0,0,60,65,
+		0,0,0,51,52,5,2,0,0,52,53,5,27,0,0,53,9,1,0,0,0,54,55,5,27,0,0,55,56,5,
+		17,0,0,56,57,3,12,6,0,57,11,1,0,0,0,58,59,3,14,7,0,59,13,1,0,0,0,60,65,
 		3,16,8,0,61,62,7,0,0,0,62,64,3,16,8,0,63,61,1,0,0,0,64,67,1,0,0,0,65,63,
 		1,0,0,0,65,66,1,0,0,0,66,15,1,0,0,0,67,65,1,0,0,0,68,73,3,18,9,0,69,70,
 		7,1,0,0,70,72,3,18,9,0,71,69,1,0,0,0,72,75,1,0,0,0,73,71,1,0,0,0,73,74,
 		1,0,0,0,74,17,1,0,0,0,75,73,1,0,0,0,76,77,3,20,10,0,77,19,1,0,0,0,78,81,
-		5,28,0,0,79,81,3,22,11,0,80,78,1,0,0,0,80,79,1,0,0,0,81,21,1,0,0,0,82,
-		83,7,2,0,0,83,23,1,0,0,0,84,85,3,28,14,0,85,86,5,28,0,0,86,25,1,0,0,0,
-		87,88,3,24,12,0,88,89,5,18,0,0,89,90,3,12,6,0,90,27,1,0,0,0,91,92,3,30,
+		5,27,0,0,79,81,3,22,11,0,80,78,1,0,0,0,80,79,1,0,0,0,81,21,1,0,0,0,82,
+		83,7,2,0,0,83,23,1,0,0,0,84,85,3,28,14,0,85,86,5,27,0,0,86,25,1,0,0,0,
+		87,88,3,24,12,0,88,89,5,17,0,0,89,90,3,12,6,0,90,27,1,0,0,0,91,92,3,30,
 		15,0,92,29,1,0,0,0,93,94,7,3,0,0,94,31,1,0,0,0,5,35,46,65,73,80
 	};
 
