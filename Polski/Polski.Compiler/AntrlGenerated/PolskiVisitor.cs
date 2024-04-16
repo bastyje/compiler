@@ -50,6 +50,30 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] PolskiParser.StatementContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] PolskiParser.BlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.if"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIf([NotNull] PolskiParser.IfContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.while"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhile([NotNull] PolskiParser.WhileContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.print"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -67,6 +91,36 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAssignment([NotNull] PolskiParser.AssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanOrExpression([NotNull] PolskiParser.BooleanOrExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.booleanAndExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanAndExpression([NotNull] PolskiParser.BooleanAndExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.booleanXorExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanXorExpression([NotNull] PolskiParser.BooleanXorExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.booleanPrimaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanPrimaryExpression([NotNull] PolskiParser.BooleanPrimaryExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.booleanValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBooleanValue([NotNull] PolskiParser.BooleanValueContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.expression"/>.
 	/// </summary>

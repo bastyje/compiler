@@ -1,10 +1,94 @@
 using System.Text;
 using Polski.Compiler.Common;
+using Polski.Compiler.LanguageDefinition;
 
 namespace Polski.Compiler.Generator;
 
 public static class LlvmGenerator
 {
+    #region Boolean
+    
+    public static string Label(string label) => $"{label}:\n";
+
+    public static string UnconditionalJump(string label)
+    {
+        return $"  br label %{label}\n";   
+    }
+    
+    public static string ConditionalJump(Operand condition, string trueLabel, string falseLabel)
+    {
+        return $"  br i1 {condition}, label %{trueLabel}, label %{falseLabel}\n";
+    }
+    
+    public static string Xor(Member resultMember, Operand left, Operand right)
+    {
+        return $"  %{resultMember.LlvmName} = xor i1 {left}, {right}\n";
+    }
+    
+    public static string Equals(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp eq i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp eq i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oeq double {left}, {right}\n"
+        };
+    }
+    
+    public static string NotEquals(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp ne i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp ne i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp une double {left}, {right}\n"
+        };
+    }
+
+    public static string Greater(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sgt i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sgt i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ogt double {left}, {right}\n"
+        };
+    }
+
+    public static string GreaterOrEquals(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sge i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sge i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oge double {left}, {right}\n"
+        };
+    }
+    
+    public static string Less(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp slt i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp slt i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp olt double {left}, {right}\n"
+        };
+    }
+    
+    public static string LessOrEquals(Member resultMember, Operand left, Operand right, string type)
+    {
+        return LlvmDataType.MapFromPolski(type) switch
+        {
+            LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sle i32 {left}, {right}\n",
+            LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sle i64 {left}, {right}\n",
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ole double {left}, {right}\n"
+        };
+    }
+    
+    #endregion
+    
+    #region Variables
+    
     public static string AllocateVariable(string name, string type)
     {
         var llvmType = LlvmDataType.MapFromPolski(type);
@@ -28,6 +112,8 @@ public static class LlvmGenerator
         var llvmType = LlvmDataType.MapFromPolski(type);
         return $"  store {llvmType} {value}, {llvmType}* %{name}\n";
     }
+    
+    #endregion
 
     #region Main
     

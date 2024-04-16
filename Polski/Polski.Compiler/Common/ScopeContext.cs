@@ -18,6 +18,8 @@ public class ScopeContext
             return _stack.Peek();
         }
     }
+
+    private int _variableCounter = 1;
     
     private readonly Stack<ICollection<Member>> _stack = new();
 
@@ -74,23 +76,12 @@ public class ScopeContext
                ?? throw new SemanticErrorException($"Variable {name} is not defined in this scope", context);
     }
     
-    public bool TryGetMember(string name, ParserRuleContext context, out Member member)
-    {
-        try
-        {
-            member = GetMember(name, context);
-        }
-        catch (InvalidOperationException)
-        {
-            member = null;
-        }
-        return member is not null;
-    }
-    
     public void AddAnonymousMember()
     {
         CurrentScopeMembers.Add(GenerateMember(PolskiDataType.Anonymous, true));
     }
+    
+    public string GetNewLabel() => (_variableCounter++).ToString();
 
     private Member GenerateMember(PolskiMember polskiMember, bool stackAllocated)
     {
@@ -108,6 +99,6 @@ public class ScopeContext
             stackAllocated);
     }
 
-    private string GenerateMemberName() => $"{CurrentScopeMembers.Count + 1}";
+    private string GenerateMemberName() => $"{_variableCounter++}";
     private static string InternalMemberName(string memberName) => $"#{memberName}";
 }

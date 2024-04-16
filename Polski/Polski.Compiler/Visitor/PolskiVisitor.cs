@@ -25,7 +25,32 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
 
     public override NodeResult VisitLine(PolskiParser.LineContext context)
     {
-        return Visit(context.statement());
+        if (context.statement() is {} statement)
+        {
+            return Visit(statement);
+        }
+        
+        if (context.block() is {} block)
+        {
+            return Visit(block);
+        }
+        
+        if (context.functionDeclaration() is {} functionDeclaration)
+        {
+            return Visit(functionDeclaration);
+        }
+        
+        if (context.@if() is {} @if)
+        {
+            return Visit(@if);
+        }
+        
+        if (context.@while() is {} @while)
+        {
+            return Visit(@while);
+        }
+        
+        throw new SemanticErrorException("Unknown line type", context);
     }
 
     public override NodeResult VisitStatement(PolskiParser.StatementContext context)
@@ -67,6 +92,29 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
     public override NodeResult VisitExpression(PolskiParser.ExpressionContext context)
     {
         return Visit(context.additiveExpression());
+    }
+    
+    public override NodeResult VisitAssignment(PolskiParser.AssignmentContext context)
+    {
+        var identifier = context.IDENTIFIER().GetText();
+        var member = _scopeContext.GetMember(identifier, context);
+        var expression = Visit(context.expression());
+        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
+        
+        if (member.PolskiMember.Type != expressionResult.PolskiMember.Type)
+        {
+            throw new SemanticErrorException(
+                $"Cannot assign not matching types: {member.PolskiMember.Type} and {expressionResult.PolskiMember.Type}",
+                context);
+        }
+        
+        return new NodeResult
+        {
+            Code = new StringBuilder()
+                .Append(expression.Code)
+                .Append(LlvmGenerator.StoreValue(member.LlvmName, member.PolskiMember.Type, expressionResult.LlvmName))
+                .ToString(),
+        };
     }
 }
 
