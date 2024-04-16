@@ -24,11 +24,17 @@ app.AddCommand((
         {
             const string code =
                 """
-                double a = 1312.12;
-                print a / 123.66;
-                double b = 1.0 + a;
-                read b;
-                print b;
+                niech liczba całkowita x będzie 5;
+                dopóki x jest większe niż 0 wykonuj
+                {
+                    x będzie x - 1;
+                    niech liczba całkowita y będzie x + 10;
+                    pokaż mi x;
+                    pokaż mi y;
+                }
+                
+                niech liczba całkowita y będzie 101;
+                pokaż mi y;
                 """;
 
             var compiled = Compiler.Compile(code);

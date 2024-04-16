@@ -72,6 +72,54 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] PolskiParser.StatementContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBlock([NotNull] PolskiParser.BlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBlock([NotNull] PolskiParser.BlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIf([NotNull] PolskiParser.IfContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIf([NotNull] PolskiParser.IfContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhile([NotNull] PolskiParser.WhileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhile([NotNull] PolskiParser.WhileContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.print"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -107,6 +155,66 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignment([NotNull] PolskiParser.AssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanOrExpression([NotNull] PolskiParser.BooleanOrExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanOrExpression([NotNull] PolskiParser.BooleanOrExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanAndExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanAndExpression([NotNull] PolskiParser.BooleanAndExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanAndExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanAndExpression([NotNull] PolskiParser.BooleanAndExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanXorExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanXorExpression([NotNull] PolskiParser.BooleanXorExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanXorExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanXorExpression([NotNull] PolskiParser.BooleanXorExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanPrimaryExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanPrimaryExpression([NotNull] PolskiParser.BooleanPrimaryExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanPrimaryExpression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanPrimaryExpression([NotNull] PolskiParser.BooleanPrimaryExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBooleanValue([NotNull] PolskiParser.BooleanValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBooleanValue([NotNull] PolskiParser.BooleanValueContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>

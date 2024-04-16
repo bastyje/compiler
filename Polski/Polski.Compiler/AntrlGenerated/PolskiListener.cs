@@ -61,6 +61,46 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] PolskiParser.StatementContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBlock([NotNull] PolskiParser.BlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBlock([NotNull] PolskiParser.BlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.if"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIf([NotNull] PolskiParser.IfContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.if"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIf([NotNull] PolskiParser.IfContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.while"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhile([NotNull] PolskiParser.WhileContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.while"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhile([NotNull] PolskiParser.WhileContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.print"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -90,6 +130,56 @@ public interface IPolskiListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignment([NotNull] PolskiParser.AssignmentContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBooleanOrExpression([NotNull] PolskiParser.BooleanOrExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBooleanOrExpression([NotNull] PolskiParser.BooleanOrExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanAndExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBooleanAndExpression([NotNull] PolskiParser.BooleanAndExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanAndExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBooleanAndExpression([NotNull] PolskiParser.BooleanAndExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanXorExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBooleanXorExpression([NotNull] PolskiParser.BooleanXorExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanXorExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBooleanXorExpression([NotNull] PolskiParser.BooleanXorExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanPrimaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBooleanPrimaryExpression([NotNull] PolskiParser.BooleanPrimaryExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanPrimaryExpression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBooleanPrimaryExpression([NotNull] PolskiParser.BooleanPrimaryExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.booleanValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBooleanValue([NotNull] PolskiParser.BooleanValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.booleanValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBooleanValue([NotNull] PolskiParser.BooleanValueContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.expression"/>.
 	/// </summary>

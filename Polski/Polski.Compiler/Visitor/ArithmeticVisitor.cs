@@ -41,11 +41,11 @@ public partial class PolskiVisitor
             var rightOperand = PrepareForOperation(right, sb, context);
             var resultMember = _scopeContext.AddMember(previousResult.PolskiMember.Type);
 
-            if (context.PLUS() is not null)
+            if (context.GetToken(PolskiParser.PLUS, i) is not null)
             {
                 sb.Append(LlvmGenerator.CallAdd(resultMember, leftOperand, rightOperand));
             }
-            else if (context.MINUS() is not null)
+            else if (context.GetToken(PolskiParser.MINUS, i) is not null)
             {
                 sb.Append(LlvmGenerator.CallSub(resultMember, leftOperand, rightOperand));
             }
