@@ -6,7 +6,7 @@ namespace Polski.Compiler.Common;
 
 public class ScopeContext
 {
-    private ICollection<Member> CurrentScopeMembers
+    private KeyValuePair<string?, ICollection<Member>> CurrentScope
     {
         get
         {
@@ -18,21 +18,25 @@ public class ScopeContext
             return _stack.Peek();
         }
     }
-
-    private int _variableCounter = 1;
     
-    private readonly Stack<ICollection<Member>> _stack = new();
+    private ICollection<Function> DeclaredFunctions { get; } = new HashSet<Function>();
 
-    public void PushScope()
+    private int _variableCounter = 0;
+    
+    private readonly Stack<KeyValuePair<string?, ICollection<Member>>> _stack = new();
+
+    public void PushScope(string? scopeName = null)
     {
         if (_stack.Count > 0)
         {
-            var currentScope = _stack.Peek();
-            _stack.Push(new HashSet<Member>(currentScope));
+            var currentScope = _stack.Peek().Value;
+            var memberSet = new Member[currentScope.Count];
+            currentScope.CopyTo(memberSet, 0);
+            _stack.Push(new KeyValuePair<string?, ICollection<Member>>(scopeName, memberSet.ToHashSet()));
             return;    
         }
         
-        _stack.Push(new HashSet<Member>());
+        _stack.Push(new KeyValuePair<string?, ICollection<Member>>(scopeName, new HashSet<Member>()));
     }
     
     public void PopScope(ParserRuleContext context)
@@ -40,6 +44,11 @@ public class ScopeContext
         if (_stack.Count == 0)
         {
             throw new SemanticErrorException("There is no defined scope", context);
+        }
+
+        if (CurrentScope.Key is not null)
+        {
+            _variableCounter = 0;
         }
         
         _stack.Pop();
@@ -52,41 +61,61 @@ public class ScopeContext
             throw new SemanticErrorException("There is no defined scope", context);
         }
         
-        if (CurrentScopeMembers.Any(m => m.PolskiMember.Name == polskiMember.Name))
+        if (CurrentScope.Value.Any(m => m.PolskiMember.Name == polskiMember.Name && m.Scope == CurrentScope.Key))
         {
             throw new SemanticErrorException($"Variable {polskiMember.Name} is already defined in this scope", context);
         }
         
         var member = GenerateMember(polskiMember, stackAllocated);
-        CurrentScopeMembers.Add(member);
+        CurrentScope.Value.Add(member);
         return member;
     }
 
     public Member AddMember(string type, bool stackAllocated = false)
     {
         var member = GenerateMember(type, stackAllocated);
-        CurrentScopeMembers.Add(member);
+        CurrentScope.Value.Add(member);
         return member;
     }
     
     public Member GetMember(string name, ParserRuleContext context)
     {
-        return CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == name)
-               ?? CurrentScopeMembers.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name))
+        return CurrentScope.Value
+            .SingleOrDefault(m => m.PolskiMember.Name == name && m.Scope == CurrentScope.Key)
+               ?? CurrentScope.Value.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name))
                ?? throw new SemanticErrorException($"Variable {name} is not defined in this scope", context);
     }
     
     public void AddAnonymousMember()
     {
-        CurrentScopeMembers.Add(GenerateMember(PolskiDataType.Anonymous, true));
+        CurrentScope.Value.Add(GenerateMember(PolskiDataType.Anonymous, true));
     }
     
-    public string GetNewLabel() => (_variableCounter++).ToString();
+    public string GetNewLabel() => (++_variableCounter).ToString();
+    
+    public Function AddFunction(string returnType, List<Member> parameters, string name, ParserRuleContext context)
+    {
+        var function = new Function(returnType, parameters, name);
+        
+        if (DeclaredFunctions.Any(f => f.Name == name))
+        {
+            throw new SemanticErrorException($"Function {name} is already defined", context);
+        }
+        
+        DeclaredFunctions.Add(function);
+        return function;
+    }
+    
+    public Function GetFunction(string name, ParserRuleContext context)
+    {
+        return DeclaredFunctions.SingleOrDefault(f => f.Name == name)
+               ?? throw new SemanticErrorException($"Function {name} is not defined", context);
+    }
 
     private Member GenerateMember(PolskiMember polskiMember, bool stackAllocated)
     {
         var llvmName = GenerateMemberName();
-        return new Member(polskiMember, llvmName, polskiMember.Type, stackAllocated);
+        return new Member(polskiMember, llvmName, polskiMember.Type, CurrentScope.Key, stackAllocated);
     }
 
     private Member GenerateMember(string type, bool stackAllocated)
@@ -96,9 +125,10 @@ public class ScopeContext
             new PolskiMember(InternalMemberName(llvmName), type),
             llvmName,
             type,
+            CurrentScope.Key,
             stackAllocated);
     }
-
-    private string GenerateMemberName() => $"{_variableCounter++}";
+    
+    private string GenerateMemberName() => $"{++_variableCounter}";
     private static string InternalMemberName(string memberName) => $"#{memberName}";
 }

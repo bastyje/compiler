@@ -7,14 +7,13 @@ public partial class PolskiVisitor
 {
     public override NodeResult VisitBlock(PolskiParser.BlockContext context)
     {
-        _scopeContext.PushScope();
-        
         var sb = new StringBuilder();
+        
+        _scopeContext.PushScope();
         foreach (var line in context.line())
         {
             sb.Append(Visit(line));
         }
-        
         _scopeContext.PopScope(context);
 
         return sb.ToString();
