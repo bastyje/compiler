@@ -1,13 +1,12 @@
 grammar Polski;
 
 program
-    : line+
+    : functionDeclaration* line+
     ;
     
 line
     : statement SEMICOLON
     | block
-    | functionDeclaration
     | if
     | while
     ;
@@ -21,12 +20,16 @@ statement
     | read
     ;
     
-block
-    : '{' line* '}'
+functionDeclaration
+    : 'niechaj będzie operacja' IDENTIFIER ('na wartościach' declaration+)? 'której rezultatem jest' type functionBlock
     ;
     
-functionDeclaration
-    : 'niech będzie operacja' IDENTIFIER ('na wartościach' declaration+)? 'której rezultatem jest' type 'to' block
+functionBlock
+    : '{' line* 'zwróć' expression SEMICOLON '}'
+    ;
+    
+block
+    : '{' line* '}'
     ;
     
 if
@@ -38,16 +41,16 @@ while
     : 'dopóki' booleanOrExpression ('wykonuj' | 'kręć' | 'to') block
     ;
     
+functionCall
+    : ('wykonaj operację' | 'rezultatem operacji') IDENTIFIER ('na wartościach' expression+)?
+    ;
+    
 print
     : ('pokaż mi' | 'zaprezentuj') expression
     ;
     
 read
     : 'zczytaj' IDENTIFIER
-    ;
-    
-assignment
-    : IDENTIFIER ASSIGN expression
     ;
     
 booleanOrExpression
@@ -78,6 +81,7 @@ booleanValue
     
 expression
     : additiveExpression
+    | functionCall
     ;
     
 additiveExpression
@@ -110,6 +114,10 @@ declaration
 definition
     : declaration ASSIGN expression
     ;
+       
+assignment
+    : IDENTIFIER ASSIGN expression
+    ;
     
 type
     : numericType
@@ -125,7 +133,7 @@ INT64: 'duża liczba całkowita';
 INT: 'liczba całkowita';
 DOUBLE: 'liczba rzeczywista';
 
-LET : 'niech' | 'niech będzie';
+LET : 'niech ' | 'niech będzie ';
 AND: 'oraz' | 'tudzież' | 'i' | 'i zarazem';
 EQUALS: 'jest ' ('równy' | 'równa' | 'równe');
 GREATER_OR_EQUALS: 'jest ' ('większy lub równy' | 'większa lub równa' | 'większe lub równe');

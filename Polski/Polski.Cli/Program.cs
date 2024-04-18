@@ -24,13 +24,24 @@ app.AddCommand((
         {
             const string code =
                 """
+                niechaj będzie operacja test której rezultatem jest liczba całkowita
+                {
+                    niech liczba całkowita x będzie 5;
+                    niech liczba całkowita y będzie 10;
+                    niech liczba całkowita z będzie x + y;
+                    pokaż mi z;
+                    zwróć z;
+                }
+                
                 niech liczba całkowita x będzie 5;
                 dopóki x jest większe niż 0 wykonuj
                 {
                     x będzie x - 1;
                     niech liczba całkowita y będzie x + 10;
+                    niech liczba całkowita w będzie rezultatem operacji test;
                     pokaż mi x;
                     pokaż mi y;
+                    pokaż mi w;
                 }
                 
                 niech liczba całkowita y będzie 101;

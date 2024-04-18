@@ -72,18 +72,6 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] PolskiParser.StatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBlock([NotNull] PolskiParser.BlockContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBlock([NotNull] PolskiParser.BlockContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -95,6 +83,30 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionBlock([NotNull] PolskiParser.FunctionBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionBlock([NotNull] PolskiParser.FunctionBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBlock([NotNull] PolskiParser.BlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBlock([NotNull] PolskiParser.BlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.if"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -120,6 +132,18 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitWhile([NotNull] PolskiParser.WhileContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionCall([NotNull] PolskiParser.FunctionCallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionCall([NotNull] PolskiParser.FunctionCallContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.print"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -143,18 +167,6 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRead([NotNull] PolskiParser.ReadContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignment([NotNull] PolskiParser.AssignmentContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PolskiParser.assignment"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignment([NotNull] PolskiParser.AssignmentContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -311,6 +323,18 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDefinition([NotNull] PolskiParser.DefinitionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment([NotNull] PolskiParser.AssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment([NotNull] PolskiParser.AssignmentContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.type"/>.
 	/// <para>The default implementation does nothing.</para>

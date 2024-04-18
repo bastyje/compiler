@@ -61,16 +61,6 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] PolskiParser.StatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBlock([NotNull] PolskiParser.BlockContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBlock([NotNull] PolskiParser.BlockContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.functionDeclaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -80,6 +70,26 @@ public interface IPolskiListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitFunctionDeclaration([NotNull] PolskiParser.FunctionDeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionBlock([NotNull] PolskiParser.FunctionBlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionBlock([NotNull] PolskiParser.FunctionBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBlock([NotNull] PolskiParser.BlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBlock([NotNull] PolskiParser.BlockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.if"/>.
 	/// </summary>
@@ -101,6 +111,16 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitWhile([NotNull] PolskiParser.WhileContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionCall([NotNull] PolskiParser.FunctionCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionCall([NotNull] PolskiParser.FunctionCallContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.print"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -120,16 +140,6 @@ public interface IPolskiListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitRead([NotNull] PolskiParser.ReadContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssignment([NotNull] PolskiParser.AssignmentContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="PolskiParser.assignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssignment([NotNull] PolskiParser.AssignmentContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.booleanOrExpression"/>.
 	/// </summary>
@@ -260,6 +270,16 @@ public interface IPolskiListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDefinition([NotNull] PolskiParser.DefinitionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignment([NotNull] PolskiParser.AssignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignment([NotNull] PolskiParser.AssignmentContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.type"/>.
 	/// </summary>

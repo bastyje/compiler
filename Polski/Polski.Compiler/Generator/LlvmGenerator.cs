@@ -1,11 +1,44 @@
 using System.Text;
 using Polski.Compiler.Common;
-using Polski.Compiler.LanguageDefinition;
 
 namespace Polski.Compiler.Generator;
 
 public static class LlvmGenerator
 {
+    #region Functions
+
+    public static string StartFunctionDeclaration(string returnType, string functionName, List<Member> parameters)
+    {
+        var llvmReturnType = LlvmDataType.MapFromPolski(returnType);
+        var llvmParameters = string.Join(", ", parameters.Select(p => $"{LlvmDataType.MapFromPolski(p.LlvmType)} %{p.LlvmName}"));
+        return $"declare {llvmReturnType} @{functionName}({llvmParameters})\n";
+    }
+    
+    public static string FunctionDeclaration(Function function)
+    {
+        var llvmReturnType = LlvmDataType.MapFromPolski(function.ReturnType);
+        var llvmParameters = string.Join(", ", function.Parameters.Select(p => $"{LlvmDataType.MapFromPolski(p.LlvmType)} %{p.LlvmName}"));
+        return $"define {llvmReturnType} @{function.Name}({llvmParameters}) {{\n";
+    }
+    
+    public static string Return(Operand operand, string type)
+    {
+        var llvmType = LlvmDataType.MapFromPolski(type);
+        return $"  ret {llvmType} {operand}\n";
+    }
+    
+    public static string FunctionClose() => "}\n";
+    
+    public static string FunctionCall(Member member, Function function, IEnumerable<Operand> arguments)
+    {
+        var llvmReturnType = LlvmDataType.MapFromPolski(function.ReturnType);
+        var argumentList = arguments.Zip(function.Parameters).Select(a => $"{LlvmDataType.MapFromPolski(a.Second.LlvmType)} %{a.First}");
+        return $"  %{member.LlvmName} = call {llvmReturnType} @{function.Name}({string.Join(", ", argumentList)})\n";
+    }
+    
+
+    #endregion
+    
     #region Boolean
     
     public static string Label(string label) => $"{label}:\n";
@@ -31,7 +64,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp eq i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp eq i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oeq double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oeq double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
     
@@ -41,7 +75,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp ne i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp ne i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp une double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp une double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
 
@@ -51,7 +86,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sgt i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sgt i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ogt double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ogt double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
 
@@ -61,7 +97,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sge i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sge i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oge double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp oge double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
     
@@ -71,7 +108,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp slt i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp slt i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp olt double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp olt double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
     
@@ -81,7 +119,8 @@ public static class LlvmGenerator
         {
             LlvmDataType.Int32 => $"  %{resultMember.LlvmName} = icmp sle i32 {left}, {right}\n",
             LlvmDataType.Int64 => $"  %{resultMember.LlvmName} = icmp sle i64 {left}, {right}\n",
-            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ole double {left}, {right}\n"
+            LlvmDataType.Double => $"  %{resultMember.LlvmName} = fcmp ole double {left}, {right}\n",
+            _ => throw new ArgumentOutOfRangeException(type)
         };
     }
     

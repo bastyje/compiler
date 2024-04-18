@@ -13,14 +13,16 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
 {
     public override NodeResult VisitProgram(PolskiParser.ProgramContext context)
     {
-        
         _scopeContext.PushScope();
-        return new StringBuilder()
+        var sb = new StringBuilder()
             .AppendLine(LlvmGenerator.Header())
+            .AppendJoin('\n', context.functionDeclaration().Select(f => Visit(f).Code))
             .AppendLine(LlvmGenerator.MainFunctionOpen())
             .AppendJoin(string.Empty, context.line().Select(l => Visit(l).Code))
-            .AppendLine(LlvmGenerator.MainFunctionClose())
-            .ToString();
+            .AppendLine(LlvmGenerator.MainFunctionClose());
+        
+        _scopeContext.PopScope(context);
+        return sb.ToString();
     }
 
     public override NodeResult VisitLine(PolskiParser.LineContext context)
@@ -33,11 +35,6 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
         if (context.block() is {} block)
         {
             return Visit(block);
-        }
-        
-        if (context.functionDeclaration() is {} functionDeclaration)
-        {
-            return Visit(functionDeclaration);
         }
         
         if (context.@if() is {} @if)
@@ -91,7 +88,17 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
 
     public override NodeResult VisitExpression(PolskiParser.ExpressionContext context)
     {
-        return Visit(context.additiveExpression());
+        if (context.additiveExpression() is { } additiveExpression)
+        {
+            return Visit(additiveExpression);
+        }
+        
+        if (context.functionCall() is { } functionCall)
+        {
+            return Visit(functionCall);
+        }
+        
+        throw new SemanticErrorException("Unknown expression type", context);
     }
     
     public override NodeResult VisitAssignment(PolskiParser.AssignmentContext context)
