@@ -141,12 +141,12 @@ public partial class PolskiVisitor
             sb.AppendLine();
             
             sb.Append(LlvmGenerator.Label(trueLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "true"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "true"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
             
             sb.Append(LlvmGenerator.Label(falseLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "false"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "false"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
 
@@ -209,12 +209,12 @@ public partial class PolskiVisitor
             sb.AppendLine();
             
             sb.Append(LlvmGenerator.Label(trueLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "true"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "true"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
                             
             sb.Append(LlvmGenerator.Label(falseLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "false"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "false"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
             
@@ -277,12 +277,12 @@ public partial class PolskiVisitor
             sb.AppendLine();
             
             sb.Append(LlvmGenerator.Label(trueLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "true"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "true"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
             
             sb.Append(LlvmGenerator.Label(falseLabel));
-            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember.LlvmName, PolskiDataType.Bool, "false"));
+            sb.Append(LlvmGenerator.StorePrimitiveValue(resultMember, "false"));
             sb.Append(LlvmGenerator.UnconditionalJump(outLabel));
             sb.AppendLine();
 

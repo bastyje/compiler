@@ -1,7 +1,7 @@
 grammar Polski;
 
 program
-    : functionDeclaration* line+
+    : globalDefinition* functionDeclaration* line+
     ;
     
 line
@@ -106,9 +106,13 @@ number
     | BIG_INTEGER_NUMBER
     | REAL_NUMBER
     ;
-    
+
 declaration
     : LET? type IDENTIFIER
+    ;
+
+globalDefinition
+    : LET 'wszechobecna' type IDENTIFIER ASSIGN number SEMICOLON
     ;
 
 definition

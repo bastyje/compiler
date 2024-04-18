@@ -128,28 +128,34 @@ public static class LlvmGenerator
     
     #region Variables
     
+    public static string CreateGlobalVariable(string name, string type, string value)
+    {
+        var llvmType = LlvmDataType.MapFromPolski(type);
+        return $"@{name} = global {llvmType} {value}\n";
+    }
+    
     public static string AllocateVariable(string name, string type)
     {
         var llvmType = LlvmDataType.MapFromPolski(type);
         return $"  %{name} = alloca {llvmType}\n";
     }
 
-    public static string StoreValue(string name, string type, string value)
+    public static string StoreValue(Member member, string value)
     {
-        var llvmType = LlvmDataType.MapFromPolski(type);
-        return $"  store {llvmType} %{value}, {llvmType}* %{name}\n";
+        var llvmType = LlvmDataType.MapFromPolski(member.PolskiMember.Type);
+        return $"  store {llvmType} %{value}, {llvmType}* {GetVariablePrefix(member)}{member.LlvmName}\n";
     }
     
-    public static string LoadValue(string resultName, string name, string type)
+    public static string LoadValue(string resultName, Member member)
     {
-        var llvmType = LlvmDataType.MapFromPolski(type);
-        return $"  %{resultName} = load {llvmType}, {llvmType}* %{name}\n";
+        var llvmType = LlvmDataType.MapFromPolski(member.PolskiMember.Type);
+        return $"  %{resultName} = load {llvmType}, {llvmType}* {GetVariablePrefix(member)}{member.LlvmName}\n";
     }
 
-    public static string StorePrimitiveValue(string name, string type, string value)
+    public static string StorePrimitiveValue(Member member, string value)
     {
-        var llvmType = LlvmDataType.MapFromPolski(type);
-        return $"  store {llvmType} {value}, {llvmType}* %{name}\n";
+        var llvmType = LlvmDataType.MapFromPolski(member.PolskiMember.Type);
+        return $"  store {llvmType} {value}, {llvmType}* {GetVariablePrefix(member)}{member.LlvmName}\n";
     }
     
     #endregion
@@ -373,4 +379,6 @@ public static class LlvmGenerator
     #endregion
     
     #endregion
+    
+    private static string GetVariablePrefix(Member member) => member.Global ? "@" : "%";
 }

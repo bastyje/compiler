@@ -261,6 +261,16 @@ public interface IPolskiListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDeclaration([NotNull] PolskiParser.DeclarationContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.globalDefinition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGlobalDefinition([NotNull] PolskiParser.GlobalDefinitionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.globalDefinition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGlobalDefinition([NotNull] PolskiParser.GlobalDefinitionContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.definition"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -19,7 +19,7 @@ public partial class PolskiVisitor
             {
                 Code = new StringBuilder()
                     .Append(expression.Code)
-                    .Append(LlvmGenerator.LoadValue(printfVar.LlvmName, expressionResult.LlvmName, expressionResult.PolskiMember.Type))
+                    .Append(LlvmGenerator.LoadValue(printfVar.LlvmName, expressionResult))
                     .Append(LlvmGenerator.Print(printfVar))
                     .ToString(),
             };
