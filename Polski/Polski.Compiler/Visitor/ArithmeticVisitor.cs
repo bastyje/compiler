@@ -194,8 +194,7 @@ public partial class PolskiVisitor
                     operand = new Operand(ResultKind.Variable, newMember.LlvmName);
                     stringBuilder.Append(LlvmGenerator.LoadValue(
                         newMember.LlvmName,
-                        leftMember.LlvmName,
-                        newMember.LlvmType));
+                        leftMember));
                 }
                 else
                 {

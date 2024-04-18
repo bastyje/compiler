@@ -170,6 +170,12 @@ public interface IPolskiVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitDeclaration([NotNull] PolskiParser.DeclarationContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolskiParser.globalDefinition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGlobalDefinition([NotNull] PolskiParser.GlobalDefinitionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="PolskiParser.definition"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

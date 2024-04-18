@@ -16,6 +16,7 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
         _scopeContext.PushScope();
         var sb = new StringBuilder()
             .AppendLine(LlvmGenerator.Header())
+            .AppendJoin('\n', context.globalDefinition().Select(g => Visit(g).Code))
             .AppendJoin('\n', context.functionDeclaration().Select(f => Visit(f).Code))
             .AppendLine(LlvmGenerator.MainFunctionOpen())
             .AppendJoin(string.Empty, context.line().Select(l => Visit(l).Code))
@@ -103,25 +104,33 @@ public partial class PolskiVisitor(ScopeContext scopeContext) : PolskiBaseVisito
     
     public override NodeResult VisitAssignment(PolskiParser.AssignmentContext context)
     {
+        var sb = new StringBuilder();
+        
         var identifier = context.IDENTIFIER().GetText();
         var member = _scopeContext.GetMember(identifier, context);
         var expression = Visit(context.expression());
-        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
-        
-        if (member.PolskiMember.Type != expressionResult.PolskiMember.Type)
+
+        if (member.PolskiMember.Type != expression.PolskiMember.Type)
         {
             throw new SemanticErrorException(
-                $"Cannot assign not matching types: {member.PolskiMember.Type} and {expressionResult.PolskiMember.Type}",
+                $"Cannot assign not matching types: {member.PolskiMember.Type} and {expression.PolskiMember.Type}",
                 context);
         }
         
-        return new NodeResult
+        sb.Append(expression);
+        
+        switch (expression.ResultKind)
         {
-            Code = new StringBuilder()
-                .Append(expression.Code)
-                .Append(LlvmGenerator.StoreValue(member.LlvmName, member.PolskiMember.Type, expressionResult.LlvmName))
-                .ToString(),
-        };
+            case ResultKind.Variable:
+                var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
+                sb.Append(LlvmGenerator.StoreValue(member, expressionResult.LlvmName));
+                break;
+            case ResultKind.Value:
+                sb.Append(LlvmGenerator.StorePrimitiveValue(member, expression.Value));
+                break;
+        }
+        
+        return sb.ToString();
     }
 }
 

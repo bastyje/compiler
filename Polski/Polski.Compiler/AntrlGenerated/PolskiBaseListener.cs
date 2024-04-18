@@ -312,6 +312,18 @@ public partial class PolskiBaseListener : IPolskiListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDeclaration([NotNull] PolskiParser.DeclarationContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolskiParser.globalDefinition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGlobalDefinition([NotNull] PolskiParser.GlobalDefinitionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolskiParser.globalDefinition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGlobalDefinition([NotNull] PolskiParser.GlobalDefinitionContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="PolskiParser.definition"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

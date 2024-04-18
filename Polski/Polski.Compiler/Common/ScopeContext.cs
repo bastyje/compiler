@@ -22,6 +22,7 @@ public class ScopeContext
     private ICollection<Function> DeclaredFunctions { get; } = new HashSet<Function>();
 
     private int _variableCounter = 0;
+    private int _globalVariableCounter = 0;
     
     private readonly Stack<KeyValuePair<string?, ICollection<Member>>> _stack = new();
 
@@ -54,7 +55,7 @@ public class ScopeContext
         _stack.Pop();
     }
     
-    public Member AddMember(PolskiMember polskiMember, ParserRuleContext context, bool stackAllocated = false)
+    public Member AddMember(PolskiMember polskiMember, ParserRuleContext context, bool stackAllocated = false, bool global = false)
     {
         if (_stack.Count == 0)
         {
@@ -66,7 +67,7 @@ public class ScopeContext
             throw new SemanticErrorException($"Variable {polskiMember.Name} is already defined in this scope", context);
         }
         
-        var member = GenerateMember(polskiMember, stackAllocated);
+        var member = GenerateMember(polskiMember, stackAllocated, global);
         CurrentScope.Value.Add(member);
         return member;
     }
@@ -81,7 +82,7 @@ public class ScopeContext
     public Member GetMember(string name, ParserRuleContext context)
     {
         return CurrentScope.Value
-            .SingleOrDefault(m => m.PolskiMember.Name == name && m.Scope == CurrentScope.Key)
+            .SingleOrDefault(m => m.PolskiMember.Name == name)
                ?? CurrentScope.Value.SingleOrDefault(m => m.PolskiMember.Name == InternalMemberName(name))
                ?? throw new SemanticErrorException($"Variable {name} is not defined in this scope", context);
     }
@@ -112,15 +113,15 @@ public class ScopeContext
                ?? throw new SemanticErrorException($"Function {name} is not defined", context);
     }
 
-    private Member GenerateMember(PolskiMember polskiMember, bool stackAllocated)
+    private Member GenerateMember(PolskiMember polskiMember, bool stackAllocated, bool global)
     {
-        var llvmName = GenerateMemberName();
-        return new Member(polskiMember, llvmName, polskiMember.Type, CurrentScope.Key, stackAllocated);
+        var llvmName = GenerateMemberName(global);
+        return new Member(polskiMember, llvmName, polskiMember.Type, CurrentScope.Key, stackAllocated, global);
     }
 
     private Member GenerateMember(string type, bool stackAllocated)
     {
-        var llvmName = GenerateMemberName();
+        var llvmName = GenerateMemberName(false);
         return new Member(
             new PolskiMember(InternalMemberName(llvmName), type),
             llvmName,
@@ -129,6 +130,6 @@ public class ScopeContext
             stackAllocated);
     }
     
-    private string GenerateMemberName() => $"{++_variableCounter}";
+    private string GenerateMemberName(bool global) => global ? $"{_globalVariableCounter++}" : $"{++_variableCounter}";
     private static string InternalMemberName(string memberName) => $"#{memberName}";
 }
