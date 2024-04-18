@@ -8,7 +8,7 @@ var app = builder.Build();
 var dev = false;
 
 #if DEBUG
-    dev = true;
+    // dev = true;
 #endif
 
 app.AddCommand((

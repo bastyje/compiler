@@ -32,7 +32,7 @@ public static class LlvmGenerator
     public static string FunctionCall(Member member, Function function, IEnumerable<Operand> arguments)
     {
         var llvmReturnType = LlvmDataType.MapFromPolski(function.ReturnType);
-        var argumentList = arguments.Zip(function.Parameters).Select(a => $"{LlvmDataType.MapFromPolski(a.Second.LlvmType)} %{a.First}");
+        var argumentList = arguments.Zip(function.Parameters).Select(a => $"{LlvmDataType.MapFromPolski(a.Second.LlvmType)} {a.First}");
         return $"  %{member.LlvmName} = call {llvmReturnType} @{function.Name}({string.Join(", ", argumentList)})\n";
     }
     

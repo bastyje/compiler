@@ -21,7 +21,7 @@ statement
     ;
     
 functionDeclaration
-    : 'niechaj będzie operacja' IDENTIFIER ('na wartościach' declaration+)? 'której rezultatem jest' type functionBlock
+    : 'niechaj będzie operacja' IDENTIFIER ('na wartościach' declaration (',' declaration)*)? 'której rezultatem jest' type functionBlock
     ;
     
 functionBlock
@@ -42,7 +42,7 @@ while
     ;
     
 functionCall
-    : ('wykonaj operację' | 'rezultatem operacji') IDENTIFIER ('na wartościach' expression+)?
+    : ('wykonaj operację' | 'rezultatem operacji' | 'rezultat operacji') IDENTIFIER ('na wartościach' expression (',' expression)*)?
     ;
     
 print
@@ -139,11 +139,11 @@ DOUBLE: 'liczba rzeczywista';
 
 LET : 'niech ' | 'niech będzie ';
 AND: 'oraz' | 'tudzież' | 'i' | 'i zarazem';
-EQUALS: 'jest ' ('równy' | 'równa' | 'równe');
-GREATER_OR_EQUALS: 'jest ' ('większy lub równy' | 'większa lub równa' | 'większe lub równe');
-GREATER: 'jest ' ('większy niż' | 'większa niż' | 'większe niż');
-LESS_OR_EQUALS: 'jest ' ('mniejszy lub równy' | 'mniejsza lub równa' | 'mniejsze lub równe');
-LESS: 'jest ' ('mniejszy niż' | 'mniejsza niż' | 'mniejsze niż');
+EQUALS: ' jest ' ('równy' | 'równa' | 'równe');
+GREATER_OR_EQUALS: ' jest ' ('większy lub równy' | 'większa lub równa' | 'większe lub równe');
+GREATER: ' jest ' ('większy niż' | 'większa niż' | 'większe niż');
+LESS_OR_EQUALS: ' jest ' ('mniejszy lub równy' | 'mniejsza lub równa' | 'mniejsze lub równe');
+LESS: ' jest ' ('mniejszy niż' | 'mniejsza niż' | 'mniejsze niż');
 NOT: 'nieprawdą jest, że';
 NOT_EQUALS: 'nie jest ' ('równy' | 'równa' | 'równe');
 OR: 'i/lub';
