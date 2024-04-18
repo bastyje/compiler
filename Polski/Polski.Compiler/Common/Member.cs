@@ -10,8 +10,8 @@ public class Member(PolskiMember? polskiMember, string llvmName, string llvmType
     private PolskiMember? _polskiMember = polskiMember;
 
     public string? Scope { get; set; } = scope;
-    public string LlvmName { get; } = llvmName;
+    public string LlvmName { get; set; } = llvmName;
     public string LlvmType { get; } = llvmType;
     public bool Global { get; set; } = global;
-    public bool StackAllocated { get; } = stackAllocated;
+    public bool StackAllocated { get; set; } = stackAllocated;
 }

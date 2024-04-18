@@ -12,9 +12,10 @@ public partial class PolskiVisitor
         var type = Visit(context.type()).PolskiMember.Type;
         
         _scopeContext.PushScope(identifier);
-        var parameters = context.declaration().Select(p => _scopeContext.AddMember(Visit(p).PolskiMember, p)).ToList();
         
+        var parameters = context.declaration().Select(p => _scopeContext.GetMember(Visit(p).PolskiMember.Name, context)).ToList();
         var function = _scopeContext.AddFunction(type, parameters, identifier, context);
+        
         var sb = new StringBuilder();
         sb.Append(LlvmGenerator.FunctionDeclaration(function));
 
@@ -37,8 +38,9 @@ public partial class PolskiVisitor
         }
 
         var expressionResult = Visit(context.expression());
+        sb.Append(expressionResult);
+        
         var operand = PrepareForOperation(expressionResult, sb, context);
-
         sb.Append(LlvmGenerator.Return(operand, expressionResult.PolskiMember.Type));
         
         return sb.ToString();

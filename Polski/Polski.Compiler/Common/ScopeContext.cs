@@ -104,6 +104,15 @@ public class ScopeContext
         }
         
         DeclaredFunctions.Add(function);
+        
+        CurrentScope.Value.Where(m => function.Parameters.Any(p => p.PolskiMember.Name == m.PolskiMember.Name))
+            .ToList()
+            .ForEach(m =>
+            {
+                m.StackAllocated = false;
+                m.LlvmName = $"{int.Parse(m.LlvmName) - 1}";
+            });
+        
         return function;
     }
     

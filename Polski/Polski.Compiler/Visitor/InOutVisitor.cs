@@ -8,8 +8,8 @@ public partial class PolskiVisitor
     public override NodeResult VisitPrint(PolskiParser.PrintContext context)
     {
         var expression = Visit(context.expression());
-        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
         
+        var expressionResult = _scopeContext.GetMember(expression.PolskiMember.Name, context);
         
         if (expressionResult.StackAllocated)
         {
